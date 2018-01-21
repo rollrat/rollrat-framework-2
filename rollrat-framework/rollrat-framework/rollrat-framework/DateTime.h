@@ -66,7 +66,7 @@ public:
   int DayOfYear() { return GetDatePart(1); }
   int Month()  { return GetDatePart(2); }
   int Day() { return GetDatePart(3); }
-  int DayOfWeek() { return (uint64_t((m_seconds & ~(uint64_t((3 << 63))))
+  int DayOfWeek() { return (uint64_t((m_seconds & ~((uint64_t)3 << 63))
     / __timeDay + 1)) % 7; }
   bool Morning() { return Hours() < 12; }
   bool Afternoon() { return !Morning(); }

@@ -564,7 +564,7 @@ std::string BigBase::to_string() const
     d /= 10;
   }
 
-  str[cmax - idst] = 0;
+  str[cmax] = 0;
   str += idst;
 
   return std::string(str);

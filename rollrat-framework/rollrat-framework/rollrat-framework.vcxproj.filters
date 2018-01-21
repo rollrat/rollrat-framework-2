@@ -27,9 +27,6 @@
     <ClInclude Include="test\Test.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="rollrat-framework\Array.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="rollrat-framework\BigInteger\BigBase.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -52,6 +49,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\alu.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="rollrat-framework\Collections\Array.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="rollrat-framework\Math\Polynomial.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -247,7 +247,7 @@ int DateTime::GetDatePart(int wh)
   n -= y4 * __Days4Years;
   int y1 = n / __DaysYear;
   if (y1 == 4) y1 = 3;
-  if (wh == 0)  y400 * 400 + y100 * 100 + y4 * 4 + y1 + 1;
+  if (wh == 0) return y400 * 400 + y100 * 100 + y4 * 4 + y1 + 1;
   n -= y1 * __DaysYear;
   if (wh == 1) return n + 1;
   bool leap = y1 == 3 && (y4 != 24 || y100 == 3);

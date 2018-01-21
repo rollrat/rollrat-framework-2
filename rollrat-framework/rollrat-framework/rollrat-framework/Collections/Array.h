@@ -151,7 +151,7 @@ public:
 
   // For Each <Item> In Type _ etc...
   template<typename func>
-  void Each(func& function)
+  void Each(func function)
   {
     for (size_t i = 0; i < this->m_size; i++)
       function(this->m_constptr[i]);

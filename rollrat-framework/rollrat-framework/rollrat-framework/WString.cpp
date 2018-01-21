@@ -29,28 +29,28 @@ WString::WString(wchar_t *str, size_t len, bool built_in)
 }
 
 WString::WString(const wchar_t *str, size_t len)
-  : length(len), 
-    first(alloc(length+1)),
-    last(first+length-1) 
+  : length(len)
 {
+  first = alloc(length + 1);
+  last = first + length - 1;
   memcpy(first, str, length * sizeof(wchar_t));
   last[1] = 0;
 }
 
 WString::WString(wchar_t ch, size_t count)
-  : length(count), 
-    first(alloc(length+1)),
-    last(first+length-1) 
+  : length(count)
 {
+  first = alloc(length + 1);
+  last = first + length - 1;
   StringTools::wcsnset(first, ch, count);
   first[length] = 0; 
 }
 
 WString::WString(wchar_t ch)
-  : length (1), 
-    first(alloc(2)), 
-    last(first)
+  : length (1)
 {
+  first = alloc(2);
+  last = first;
   *first = ch;
   *(last + 1) = 0;
 }
@@ -427,7 +427,8 @@ WString WString::Remove(size_t starts, size_t len)
   wchar_t *newString = new wchar_t[retlen + 1];
 
   memcpy(newString, first, starts * sizeof(wchar_t));
-  memcpy(newString + starts, first + starts + len, (retlen - starts) * sizeof(wchar_t));
+  memcpy(newString + starts, first + starts + len, (retlen - starts) 
+    * sizeof(wchar_t));
 
   newString[retlen] = 0;
 

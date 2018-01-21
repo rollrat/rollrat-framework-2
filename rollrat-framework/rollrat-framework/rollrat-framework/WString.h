@@ -17,7 +17,7 @@
 #include <string>
 
 #include "StringTools.h"
-#include "Array.h"
+#include "Collections/Array.h"
 
 namespace ofw
 {

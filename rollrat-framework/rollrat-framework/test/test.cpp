@@ -13,12 +13,32 @@
 #include <iostream>
 
 #include "Test.h"
+#include "../rollrat-framework/WString.h"
+
+#include "../rollrat-framework/BigInteger/BigInteger.h"
 
 void test_StringTools();
 
+using namespace ofw;
+using namespace std;
+
 int main()
 {
-  test_StringTools();
+	/*WString ws(L"<B>rollrat<B> <B>software<B>");
+	WString::ArrayType ar = ws.Split(L"<B>");
+
+  ar.Each([] (WString *ws){ wcout << *ws << endl; });
+
+  wcout << ws.Replace(L"<B>", L"->C<-");*/
+
+  BigInteger factorial(1);
+
+  for (int i = 1; i < 100; i++)
+  {
+    factorial *= i;
+    //if (i == 13)
+    cout << i << "!=" << factorial << "\n";
+  }
 
   return 0;
 }
