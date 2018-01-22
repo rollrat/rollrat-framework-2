@@ -17,39 +17,71 @@
 
 #include "../rollrat-framework/BigInteger/BigFraction.h"
 
+#include "../rollrat-framework/File.h"
+
+void test_WString();
 void test_StringTools();
+void test_BigXXX();
 
 using namespace ofw;
 using namespace std;
 
 int main()
 {
-	/*WString ws(L"<B>rollrat<B> <B>software<B>");
+  FolderEnumerator fe("C:\\");
+  wcout << fe.GetFullName();
+  fe.NextFile();
+  wcout << fe.GetFullName();
+  fe.NextFile();
+  wcout << fe.GetFullName();
+  fe.NextFile();
+  wcout << fe.GetFullName();
+  fe.NextFile();
+  wcout << fe.GetFullName();
+  return 0;
+}
+
+void test_File()
+{
+}
+
+void test_WString()
+{
+  // test split and replace
+  WString ws(L"<B>rollrat<B> <B>software<B>");
 	WString::ArrayType ar = ws.Split(L"<B>");
-
   ar.Each([] (WString *ws){ wcout << *ws << endl; });
+  wcout << ws.Replace(L"<B>", L"->C<-");
+}
 
-  wcout << ws.Replace(L"<B>", L"->C<-");*/
-
- /* BigInteger factorial(1);
-
+void test_BigXXX()
+{
+  // test bigbase to_string function
+  BigInteger factorial(1);
   for (int i = 1; i < 100; i++)
   {
     factorial *= i;
     if (i == 15)
     cout << i << "!=" << factorial << "\n";
-  }*/
+  }
 
+  // test bigfraction fraction_point
   BigFraction bf(0);
-
-  for (int i = 1; i < 1000; i++)
+  for (int i = 1; i < 100; i++)
     bf += BigFraction(1, i);
-
   cout << bf.fraction_point(10) << "\n";
+  
+  // test get phi approach using bif fraction
+  bf = BigFraction(0);
+  for (int i = 1; i < 500; i++)
+  {
+    bf += BigFraction(1, i * 4 - 3);
+    bf -= BigFraction(1, i * 4 - 1);
+  }
+  cout << (bf * 4).fraction_point(100) << "\n";
 
-  //cout << "x3F4C54109C045923"_i << "\n";
-
-  return 0;
+  // test init_hex string
+  cout << "x3F4C54109C045923"_i << "\n";
 }
 
 void test_StringTools()

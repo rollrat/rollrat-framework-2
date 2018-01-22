@@ -122,6 +122,7 @@
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\alu.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\biginteger.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\fraction.h" />
+    <ClInclude Include="rollrat-framework\File.h" />
     <ClInclude Include="rollrat-framework\Math\Polynomial.h" />
     <ClInclude Include="rollrat-framework\DateTime.h" />
     <ClInclude Include="rollrat-framework\Defines.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="rollrat-framework\BigInteger\BigFraction.cpp" />
     <ClCompile Include="rollrat-framework\BigInteger\BigInteger.cpp" />
     <ClCompile Include="rollrat-framework\DateTime.cpp" />
+    <ClCompile Include="rollrat-framework\File.cpp" />
     <ClCompile Include="rollrat-framework\StringTools.cpp" />
     <ClCompile Include="rollrat-framework\WString.cpp" />
     <ClCompile Include="rollrat-framework\WStringBuilder.cpp" />
