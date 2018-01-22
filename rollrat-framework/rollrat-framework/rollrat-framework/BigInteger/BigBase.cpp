@@ -448,8 +448,11 @@ bool BigBase::operator<(const this_type& integer) const
     return true;
   else if (length == 0 && integer.length == 0)
     return false;
-  else
-    return blocks[length - 1] < integer.blocks[integer.length - 1];
+  else {
+    for (size_t ptr = length; --ptr >= 0; )
+      if (blocks[ptr] < integer.blocks[ptr]) return true;
+    return false;
+  }
 }
 
 bool BigBase::operator>(const this_type& integer) const

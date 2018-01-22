@@ -15,7 +15,7 @@
 #include "Test.h"
 #include "../rollrat-framework/WString.h"
 
-#include "../rollrat-framework/BigInteger/BigInteger.h"
+#include "../rollrat-framework/BigInteger/BigFraction.h"
 
 void test_StringTools();
 
@@ -31,14 +31,23 @@ int main()
 
   wcout << ws.Replace(L"<B>", L"->C<-");*/
 
-  BigInteger factorial(1);
+ /* BigInteger factorial(1);
 
   for (int i = 1; i < 100; i++)
   {
     factorial *= i;
-    //if (i == 13)
+    if (i == 15)
     cout << i << "!=" << factorial << "\n";
-  }
+  }*/
+
+  BigFraction bf(0);
+
+  for (int i = 1; i < 1000; i++)
+    bf += BigFraction(1, i);
+
+  cout << bf.fraction_point(10) << "\n";
+
+  //cout << "x3F4C54109C045923"_i << "\n";
 
   return 0;
 }
