@@ -135,6 +135,11 @@ size_t ofw::StringTools::wcslen(const wchar_t * str)
   const ptr_type most_magic = (less_magic << 15);
 
   trim = align_address(str);
+  
+  if ((*(ptr_type *)str  - less_magic) & (~*(ptr_type *)str  & most_magic))
+  {
+    return wfindzero(str) - str;
+  }
 
   // Find Zero Byte in pointer type value.
   while (1)
