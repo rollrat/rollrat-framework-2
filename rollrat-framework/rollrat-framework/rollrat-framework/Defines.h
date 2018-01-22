@@ -25,5 +25,21 @@ typedef uint64_t	ptr_type;
 typedef uint32_t	ptr_type;
 #endif
 
+#ifdef _MSC_VER
+#define _COMPILER_MS
+#elif __clang__
+#define _COMPILER_LLVM
+#elif __GNUC__
+#define _COMPILER_GCC
+#elif defined(__MINGW32__) || defined(__MINGW64__)
+#define _COMPILER_MINGW
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+#define _OS_WINDOWS
+#elif __linux__
+#define _OS_LINUX
+#endif
+
 
 #endif
