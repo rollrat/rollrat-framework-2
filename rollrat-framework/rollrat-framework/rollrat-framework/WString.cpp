@@ -675,7 +675,7 @@ WString::Utf8Array WString::ToUtf8(bool file_bom)
   return WString::Utf8Array(bytes, szReal);
 }
 
-inline void WString::Swap(WString& refer)
+void WString::Swap(WString& refer)
 {
   std::swap(first, refer.first);
   std::swap(last, refer.last);
@@ -694,7 +694,7 @@ void WString::operator=(const WString& refer)
   }
 }
 
-inline void WString::Clone(const WString& refer)
+void WString::CloneSet(const WString& refer)
 {
   if (first != nullptr)
     delete[] first;
@@ -705,10 +705,10 @@ inline void WString::Clone(const WString& refer)
   length = refer.length;
 }
 
-inline WString WString::Clone()
+WString WString::Clone()
 {
   WString nstr;
-  nstr.Clone(*this);
+  nstr.CloneSet(*this);
   return nstr;
 }
 
@@ -1077,7 +1077,7 @@ bool WString::EndsWithHelper(const wchar_t *str, size_t ends, size_t len) const
   if (length < len - ends)
     return false;
 
-  return !memcmp(first - ends - len + 1, str, len * sizeof(wchar_t));
+  return !memcmp(last - ends - len + 1, str, len * sizeof(wchar_t));
 }
 
 WString WString::InsertLeftHelper(size_t separation,

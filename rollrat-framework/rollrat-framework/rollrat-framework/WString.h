@@ -171,10 +171,11 @@ public:
   inline bool operator<=(const WString& compare)
   { return !this->operator>(compare);  }
 
-  inline void Swap(WString& refer);
+  void Swap(WString& refer);
   void operator=(const WString& refer);
-  inline void Clone(const WString& refer);
-  inline WString Clone();
+  void CloneSet(const WString& refer);
+  WString Clone();
+
   friend std::wostream& operator<<(std::wostream& os, const WString& refer)
   {
     if (refer.Null()) os << L"Null-(0)";
