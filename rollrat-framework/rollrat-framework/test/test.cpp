@@ -15,11 +15,11 @@
 
 #include "Test.h"
 #include "../rollrat-framework/WString.h"
-
 #include "../rollrat-framework/BigInteger/BigFraction.h"
-
 #include "../rollrat-framework/File.h"
+#include "../rollrat-framework/Encoding/Base64Encoding.h"
 
+void test_Base64();
 void test_Enumerator();
 void test_WString();
 void test_StringTools();
@@ -34,14 +34,21 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  test_Enumerator();
+  test_Base64();
   return 0;
+}
+
+void test_Base64()
+{
+  wcout << Base64Encoding::Base64Encode("rollrat") << endl;
+  wcout << WString((const char *)Base64Encoding::Base64Decode(
+    Base64Encoding::Base64Encode("rollrat")).Array(), 7);
 }
 
 void test_Enumerator()
 {
   // enumerate specific folder
-  FolderEnumerator fe("C:\\Program Files\\windows nt");
+  FolderEnumerator fe("C:\\");
   do
     wcout << fe.GetFullName() << endl;
   while (fe.NextFolder());
