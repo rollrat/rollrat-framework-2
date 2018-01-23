@@ -47,29 +47,6 @@ public:
   bool IsValid();
 };
 
-class FileEnumerator
-{
-  FolderEnumerator *folder_enum;
-  FileEnumerator *prev;
-  WString path;
-  bool into;
-  bool top;
-  FileEnumerator(FileEnumerator& fe);
-
-public:
-  FileEnumerator(const WString& dir);
-  ~FileEnumerator();
-
-  bool NextFile();
-  bool IsDirectory();
-  bool IsFile();
-  WString GetFullName();
-  WString GetName();
-  bool IsValid();
-  uint64_t GetFileSize() const;
-
-};
-
 }
 #endif
 

@@ -28,16 +28,6 @@ using namespace std;
 
 int main()
 {
-  FolderEnumerator fe("C:\\");
-  wcout << fe.GetFullName();
-  fe.NextFile();
-  wcout << fe.GetFullName();
-  fe.NextFile();
-  wcout << fe.GetFullName();
-  fe.NextFile();
-  wcout << fe.GetFullName();
-  fe.NextFile();
-  wcout << fe.GetFullName();
   return 0;
 }
 

@@ -36,7 +36,7 @@ ofw::FolderEnumerator::FolderEnumerator(const WString & dir)
 
   // Skup current or parents folder.
   do {
-    if (!current_file.Equal(L"..") || !current_file.Equal(L"."))
+    if (!current_file.Equal(L"..") && !current_file.Equal(L"."))
       break;
   } while (NextFile());
 }
@@ -57,7 +57,7 @@ bool ofw::FolderEnumerator::NextFile()
 
   current_file = WString(current_data.cFileName);
 
-  return false;
+  return true;
 }
 
 bool ofw::FolderEnumerator::IsDirectory()
@@ -94,57 +94,4 @@ WString ofw::FolderEnumerator::GetFullName()
 bool ofw::FolderEnumerator::IsValid()
 {
   return ( handle != INVALID_HANDLE_VALUE );
-}
-
-///===-----------------------------------------------------------------------===
-///
-///               File Enumerator
-///
-///===-----------------------------------------------------------------------===
-
-ofw::FileEnumerator::FileEnumerator(FileEnumerator & fe)
-{
-}
-
-ofw::FileEnumerator::FileEnumerator(const WString & dir)
-{
-}
-
-ofw::FileEnumerator::~FileEnumerator()
-{
-}
-
-bool ofw::FileEnumerator::NextFile()
-{
-  return false;
-}
-
-bool ofw::FileEnumerator::IsDirectory()
-{
-  return false;
-}
-
-bool ofw::FileEnumerator::IsFile()
-{
-  return false;
-}
-
-WString ofw::FileEnumerator::GetFullName()
-{
-  return WString();
-}
-
-WString ofw::FileEnumerator::GetName()
-{
-  return WString();
-}
-
-bool ofw::FileEnumerator::IsValid()
-{
-  return false;
-}
-
-uint64_t ofw::FileEnumerator::GetFileSize() const
-{
-  return uint64_t();
 }
