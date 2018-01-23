@@ -30,6 +30,10 @@ using namespace std;
 
 int main()
 {
+	std::locale::global(std::locale("kor"));
+	std::wcout.imbue(std::locale("kor"));
+	std::wcin.imbue(std::locale("kor"));
+
   test_Enumerator();
   return 0;
 }
@@ -37,7 +41,7 @@ int main()
 void test_Enumerator()
 {
   // enumerate specific folder
-  FolderEnumerator fe("C:\\");
+  FolderEnumerator fe("C:\\Program Files\\windows nt");
   do
     wcout << fe.GetFullName() << endl;
   while (fe.NextFolder());
