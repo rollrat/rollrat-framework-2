@@ -11,6 +11,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <iostream>
+#include <stack>
 
 #include "Test.h"
 #include "../rollrat-framework/WString.h"
@@ -19,6 +20,7 @@
 
 #include "../rollrat-framework/File.h"
 
+void test_Enumerator();
 void test_WString();
 void test_StringTools();
 void test_BigXXX();
@@ -28,11 +30,35 @@ using namespace std;
 
 int main()
 {
+  test_Enumerator();
   return 0;
 }
 
-void test_File()
+void test_Enumerator()
 {
+  // enumerate specific folder
+  FolderEnumerator fe("C:\\");
+  do
+    wcout << fe.GetFullName() << endl;
+  while (fe.NextFolder());
+
+  // enumerate all sub-folder
+  stack<FolderEnumerator*> stc;
+  stc.push(nullptr);
+  FolderEnumerator *ptr = new FolderEnumerator("C:\\");
+  while (ptr) {
+    if (ptr->IsValid() && ptr->NextFolder()) {
+      wcout << ptr->GetFullName() << endl;
+      if (ptr->GetFullName().StartsWith(L"C:\\Program Files\\windows nt"))
+        wcout << "asdf";
+      stc.push(ptr);
+      ptr = new FolderEnumerator(ptr->GetFullName());
+
+    } else {
+      ptr = stc.top();
+      stc.pop();
+    }
+  }
 }
 
 void test_WString()

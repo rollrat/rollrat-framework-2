@@ -40,6 +40,7 @@ public:
   ~FolderEnumerator();
 
   bool NextFile();
+  bool NextFolder();
   bool IsDirectory();
   bool IsFile();
   WString GetName();

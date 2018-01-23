@@ -34,7 +34,7 @@ ofw::FolderEnumerator::FolderEnumerator(const WString & dir)
     return;
   current_file = WString(current_data.cFileName);
 
-  // Skup current or parents folder.
+  // Skip current or parents folder.
   do {
     if (!current_file.Equal(L"..") && !current_file.Equal(L"."))
       break;
@@ -57,6 +57,18 @@ bool ofw::FolderEnumerator::NextFile()
 
   current_file = WString(current_data.cFileName);
 
+  return true;
+}
+
+bool ofw::FolderEnumerator::NextFolder()
+{
+  do{
+    if (FindNextFileW(handle, &current_data) == FALSE) {
+      FindClose(handle);
+      handle = INVALID_HANDLE_VALUE;
+      return false;
+    }
+  } while (!IsDirectory());
   return true;
 }
 
