@@ -60,6 +60,15 @@
     <ClInclude Include="rollrat-framework\File.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="rollrat-framework\ChronoTimer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="rollrat-framework\Encoding\Base64Encoding.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="rollrat-framework\WStringBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rollrat-framework\StringTools.cpp">
@@ -90,6 +99,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="rollrat-framework\File.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="rollrat-framework\Encoding\Base64Encoding.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="rollrat-framework\WStringBuffer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
