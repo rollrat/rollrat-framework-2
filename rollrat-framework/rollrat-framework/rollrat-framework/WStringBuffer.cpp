@@ -44,6 +44,7 @@ void ofw::WStringBuffer::Append(wchar_t ch)
 {
   if (length == capacity)
     EnsureCopy(length + 1);
+  ptr[length++] = ch;
 }
 
 WString ofw::WStringBuffer::ToString()

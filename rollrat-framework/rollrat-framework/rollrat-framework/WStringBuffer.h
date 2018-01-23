@@ -48,10 +48,5 @@ private:
   void EnsureCopy(size_t size);
 };
 
-template<typename wt_over>
-inline void WStringBuffer::Append(wt_over over)
-{
-}
-
 }
 #endif
