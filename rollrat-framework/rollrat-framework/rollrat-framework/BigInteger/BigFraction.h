@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _BIGFRACTION_
-#define _BIGFRACTION_
+#ifndef _BIGFRACTION_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _BIGFRACTION_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include "BigInteger.h"
 

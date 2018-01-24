@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _WSTRING_
-#define _WSTRING_
+#ifndef _WSTRING_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _WSTRING_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <memory>
 #include <string>

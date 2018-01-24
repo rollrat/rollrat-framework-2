@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _ARRAY_
-#define _ARRAY_
+#ifndef _ARRAY_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _ARRAY_9bf1541fdf7efd41b7b39543fd870ac4_
 
 namespace ofw
 {

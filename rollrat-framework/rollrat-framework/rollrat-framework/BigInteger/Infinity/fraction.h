@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _FRACTION_
-#define _FRACTION_
+#ifndef _FRACTION_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _FRACTION_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include "biginteger.h"
 

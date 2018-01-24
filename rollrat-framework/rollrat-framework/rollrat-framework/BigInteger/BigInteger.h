@@ -11,8 +11,8 @@
 //===----------------------------------------------------------------------===//
 
 
-#ifndef _BIGINTEGER_
-#define _BIGINTEGER_
+#ifndef _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include "BigBase.h"
 

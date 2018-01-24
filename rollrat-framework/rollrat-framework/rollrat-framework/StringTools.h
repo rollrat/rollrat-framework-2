@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _STRING_TOOLS_
-#define _STRING_TOOLS_
+#ifndef _STRING_TOOLS_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _STRING_TOOLS_9bf1541fdf7efd41b7b39543fd870ac4_
 
 namespace ofw
 {

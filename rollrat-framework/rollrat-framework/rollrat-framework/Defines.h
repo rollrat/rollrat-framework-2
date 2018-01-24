@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _DEFINES_
-#define _DEFINES_
+#ifndef _DEFINES_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _DEFINES_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <stdint.h>
 

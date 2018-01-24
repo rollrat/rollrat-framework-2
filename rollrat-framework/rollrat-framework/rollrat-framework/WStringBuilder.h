@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _WSTRING_BUILDER_
-#define _WSTRING_BUILDER_
+#ifndef _WSTRING_BUILDER_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _WSTRING_BUILDER_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <memory.h>
 

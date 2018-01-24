@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef _BIGBASE_
-#define _BIGBASE_
+#ifndef _BIGBASE_9bf1541fdf7efd41b7b39543fd870ac4_
+#define _BIGBASE_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <stdint.h>
 #include <memory>
