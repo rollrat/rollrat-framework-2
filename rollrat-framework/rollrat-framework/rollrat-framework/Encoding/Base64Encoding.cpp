@@ -10,9 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Base64Encoding.h"
-
-#include "../WStringBuffer.h"
+#include "Encoding/Base64Encoding.h"
+#include "WStringBuffer.h"
 
 using namespace ofw;
 

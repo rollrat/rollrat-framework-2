@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "BigFraction.h"
+#include "BigInteger/BigFraction.h"
 
 using namespace ofw;
 

@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "BigInteger.h"
+#include "BigInteger/BigInteger.h"
 
 using namespace ofw;
 
