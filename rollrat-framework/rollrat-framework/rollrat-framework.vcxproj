@@ -69,7 +69,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <IncludePath>C:\Users\rollrat\source\repos\rollrat-framework-2\rollrat-framework\rollrat-framework\rollrat-framework;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -123,6 +126,8 @@
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\alu.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\biginteger.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\fraction.h" />
+    <ClInclude Include="rollrat-framework\Crypto\Hash.h" />
+    <ClInclude Include="rollrat-framework\Crypto\Sha256.h" />
     <ClInclude Include="rollrat-framework\Encoding\Base64Encoding.h" />
     <ClInclude Include="rollrat-framework\File.h" />
     <ClInclude Include="rollrat-framework\Math\Polynomial.h" />
@@ -138,6 +143,7 @@
     <ClCompile Include="rollrat-framework\BigInteger\BigBase.cpp" />
     <ClCompile Include="rollrat-framework\BigInteger\BigFraction.cpp" />
     <ClCompile Include="rollrat-framework\BigInteger\BigInteger.cpp" />
+    <ClCompile Include="rollrat-framework\Crypto\Sha256.c" />
     <ClCompile Include="rollrat-framework\DateTime.cpp" />
     <ClCompile Include="rollrat-framework\Encoding\Base64Encoding.cpp" />
     <ClCompile Include="rollrat-framework\File.cpp" />

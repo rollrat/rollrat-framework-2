@@ -69,6 +69,12 @@
     <ClInclude Include="rollrat-framework\WStringBuffer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="rollrat-framework\Crypto\Hash.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="rollrat-framework\Crypto\Sha256.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rollrat-framework\StringTools.cpp">
@@ -105,6 +111,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="rollrat-framework\WStringBuffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="rollrat-framework\Crypto\Sha256.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
