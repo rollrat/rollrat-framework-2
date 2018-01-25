@@ -151,13 +151,15 @@ WString WString::Concat(const WString& t1, const WString& t2, const WString& t3)
   mergerString = new wchar_t[newSize + 1];
   memcpy(mergerString, t1.first, t1.length * sizeof(wchar_t));
   memcpy(mergerString + t1.length, t2.first, t2.length * sizeof(wchar_t));
-  memcpy(mergerString + t1.length + t2.length, t3.first, t3.length * sizeof(wchar_t));
+  memcpy(mergerString + t1.length + t2.length, t3.first, t3.length
+    * sizeof(wchar_t));
   mergerString[newSize] = 0;
   
   return WString(mergerString, newSize, false);
 }
 
-WString WString::Concat(const WString& t1, const WString& t2, const WString& t3, const WString& t4)
+WString WString::Concat(const WString& t1, const WString& t2, 
+  const WString& t3, const WString& t4)
 {
   if (t1.Empty() && t2.Empty() && t3.Empty() && t4.Empty())
   {
@@ -170,8 +172,10 @@ WString WString::Concat(const WString& t1, const WString& t2, const WString& t3,
   mergerString = new wchar_t[newSize + 1];
   memcpy(mergerString, t1.first, t1.length * sizeof(wchar_t));
   memcpy(mergerString + t1.length, t2.first, t2.length * sizeof(wchar_t));
-  memcpy(mergerString + t1.length + t2.length, t3.first, t3.length * sizeof(wchar_t));
-  memcpy(mergerString + t1.length + t2.length + t3.length, t4.first, t4.length * sizeof(wchar_t));
+  memcpy(mergerString + t1.length + t2.length, t3.first, t3.length 
+    * sizeof(wchar_t));
+  memcpy(mergerString + t1.length + t2.length + t3.length, t4.first, 
+    t4.length * sizeof(wchar_t));
   mergerString[newSize] = 0;
 
   return WString(mergerString, newSize, false);
@@ -832,7 +836,8 @@ size_t WString::CountHelper(const wchar_t *str, size_t len) const
   return ret;
 }
 
-WString::ArrayType WString::SplitHelper(const wchar_t *src, size_t srclen, size_t max)
+WString::ArrayType WString::SplitHelper(const wchar_t *src, 
+  size_t srclen, size_t max)
 {
   size_t         alloclen = max <= length ? max : length;
   wchar_t      **position = new wchar_t*[alloclen];
@@ -898,7 +903,8 @@ WString::ArrayType WString::SplitSlowHelper(const wchar_t *src,
   return ArrayType(n, count + max_remain);
 }
 
-WString WString::SplitPositionHelper(const wchar_t *src, size_t srclen, size_t pos)
+WString WString::SplitPositionHelper(const wchar_t *src, 
+  size_t srclen, size_t pos)
 {
   wchar_t *ptr = first, *tptr;
 
@@ -1384,8 +1390,8 @@ WString::ArrayType WString::LineSplitHelper(size_t len, const wchar_t *front,
   {
     if (end_len)
     {
-      StringTools::wcsnset(n[countLineLen - 1]->first + front_len + remainLen, L' ', 
-        len - remainLen);
+      StringTools::wcsnset(n[countLineLen - 1]->first + front_len + 
+        remainLen, L' ', len - remainLen);
     }
     else
     {
