@@ -34,7 +34,7 @@ public:
   static WString FromString(const WString& wstr)
   {
     const char *hexmap = "0123456789abcdef";
-    uint8_t *hash = FromArray((uint8_t *)wstr.Reference(), wstr.Length * 2);
+    uint8_t *hash = FromArray((uint8_t *)wstr.Reference(), wstr.Length() * 2);
     WStringBuffer buffer(64);
     for (int i = 0; i < 32; i++) {
       buffer.Append((wchar_t)hexmap[hash[i] >> 4]);
