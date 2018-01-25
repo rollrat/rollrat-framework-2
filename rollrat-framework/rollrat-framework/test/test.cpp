@@ -18,7 +18,9 @@
 #include "../rollrat-framework/BigInteger/BigFraction.h"
 #include "../rollrat-framework/File.h"
 #include "../rollrat-framework/Encoding/Base64Encoding.h"
+#include "../rollrat-framework/Crypto/Hash.h"
 
+void test_Hash();
 void test_Base64();
 void test_Enumerator();
 void test_WString();
@@ -34,8 +36,15 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  test_Base64();
+  test_Hash();
   return 0;
+}
+
+void test_Hash()
+{
+  // e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  wcout << Sha256::FromString(L"") << endl;
+  wcout << Sha256::FromString(L"rollrat") << endl;
 }
 
 void test_Base64()

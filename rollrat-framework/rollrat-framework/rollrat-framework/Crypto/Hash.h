@@ -43,6 +43,23 @@ public:
     return buffer.ToString();
   }
 
+  static WString FromString(const char *str, size_t length)
+  {
+    const char *hexmap = "0123456789abcdef";
+    uint8_t *hash = FromArray((uint8_t *)str, length);
+    WStringBuffer buffer(64);
+    for (int i = 0; i < 32; i++) {
+      buffer.Append((wchar_t)hexmap[hash[i] >> 4]);
+      buffer.Append((wchar_t)hexmap[hash[i] & 0xF]);
+    }
+    return buffer.ToString();
+  }
+
+  static WString FromString(const char *str)
+  {
+    return FromString(str, StringTools::strlen(str));
+  }
+
 };
 
 }
