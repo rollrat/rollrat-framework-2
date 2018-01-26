@@ -14,7 +14,7 @@
 
 using namespace ofw;
 
-void ofw::HashCrypto::Encryption(const CryptoArray& plain, CryptoArray& key)
+void ofw::HashCrypto::Run(const CryptoArray& plain, CryptoArray& key)
 {
   uint8_t *hash = Sha256::FromArray(key.Array(), key.Size());
   uint8_t chain[256] = { 0, };
@@ -24,20 +24,6 @@ void ofw::HashCrypto::Encryption(const CryptoArray& plain, CryptoArray& key)
     ((uint64_t *)plain.Array())[i] ^= ((uint64_t *)hash)[i % 8];
 
   uint8_t *arr = plain.Array() + round * 8;
-  for (size_t i = 0; i < remain; i++)
-    arr[i] ^= hash[i];
-}
-
-void ofw::HashCrypto::Decryption(const CryptoArray& chip, CryptoArray& key)
-{
-  uint8_t *hash = Sha256::FromArray(key.Array(), key.Size());
-  uint8_t chain[256] = { 0, };
-  size_t round = chip.Size() / 8;
-  size_t remain = chip.Size() % 8;
-  for (size_t i = 0; i < round; i++)
-    ((uint64_t *)chip.Array())[i] ^= ((uint64_t *)hash)[i % 8];
-
-  uint8_t *arr = chip.Array() + round * 8;
   for (size_t i = 0; i < remain; i++)
     arr[i] ^= hash[i];
 }

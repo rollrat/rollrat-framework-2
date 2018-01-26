@@ -23,8 +23,7 @@ class HashCrypto
 public:
   using CryptoArray = ReadOnlyArray<uint8_t>;
 
-  static void Encryption(const CryptoArray& plain, CryptoArray& key);
-  static void Decryption(const CryptoArray& chip, CryptoArray& key);
+  static void Run(const CryptoArray& plain, CryptoArray& key);
 };
 
 }
