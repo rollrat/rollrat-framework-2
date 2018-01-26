@@ -19,7 +19,7 @@
 namespace ofw
 {
 
-class Base64Encoding
+class UrlEncoding
 {
 public:
 
