@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <IncludePath>C:\Users\rollrat\source\repos\rollrat-framework-2\rollrat-framework\rollrat-framework\rollrat-framework;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\rollrat\source\repos\rollrat-framework-2\rollrat-framework\rollrat-framework;C:\Users\rollrat\source\repos\rollrat-framework-2\rollrat-framework\rollrat-framework\rollrat-framework;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Users\rollrat\source\repos\rollrat-framework-2\rollrat-framework\rollrat-framework\rollrat-framework;$(IncludePath)</IncludePath>

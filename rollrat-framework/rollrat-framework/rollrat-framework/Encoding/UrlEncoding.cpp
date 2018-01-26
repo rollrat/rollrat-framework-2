@@ -74,7 +74,7 @@ static wchar_t getWChar(unsigned long long low, unsigned long mask)
   return wt;
 }
 
-WString ofw::Base64Encoding::UrlEncode(unsigned char * bytes, size_t size)
+WString ofw::UrlEncoding::UrlEncode(unsigned char * bytes, size_t size)
 {
   WStringBuilder wb;
 
@@ -85,7 +85,7 @@ WString ofw::Base64Encoding::UrlEncode(unsigned char * bytes, size_t size)
   return wb.ToString();
 }
 
-WString ofw::Base64Encoding::UrlEncode(const wchar_t * wchs, size_t length)
+WString ofw::UrlEncoding::UrlEncode(const wchar_t * wchs, size_t length)
 {
   WStringBuilder wb;
   for (size_t i = 0; i < length; i++) {
@@ -108,7 +108,7 @@ WString ofw::Base64Encoding::UrlEncode(const wchar_t * wchs, size_t length)
   return wb.ToString();
 }
 
-WString ofw::Base64Encoding::UrlDecode(const wchar_t * wchs, size_t length)
+WString ofw::UrlEncoding::UrlDecode(const wchar_t * wchs, size_t length)
 {
   WStringBuilder wb;
   for (size_t i = 0; i < length; ) {

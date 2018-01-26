@@ -14,12 +14,14 @@
 #include <stack>
 
 #include "Test.h"
-#include "../rollrat-framework/WString.h"
-#include "../rollrat-framework/BigInteger/BigFraction.h"
-#include "../rollrat-framework/File.h"
-#include "../rollrat-framework/Encoding/Base64Encoding.h"
-#include "../rollrat-framework/Crypto/Hash.h"
+#include "rollrat-framework/WString.h"
+#include "rollrat-framework/BigInteger/BigFraction.h"
+#include "rollrat-framework/File.h"
+#include "rollrat-framework/Encoding/Base64Encoding.h"
+#include "rollrat-framework/Crypto/Hash.h"
+#include "rollrat-framework/Encoding/UrlEncoding.h"
 
+void test_UrlEncoding();
 void test_Hash();
 void test_Base64();
 void test_Enumerator();
@@ -36,8 +38,14 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  test_Hash();
+  test_UrlEncoding();
   return 0;
+}
+
+void test_UrlEncoding()
+{
+  wcout << UrlEncoding::UrlEncode("rollrat") << endl;
+  wcout << UrlEncoding::UrlDecode(L"%72%6F%6C%6C%72%61%74") << endl;
 }
 
 void test_Hash()
