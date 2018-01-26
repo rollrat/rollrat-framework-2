@@ -135,6 +135,7 @@
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\alu.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\biginteger.h" />
     <ClInclude Include="rollrat-framework\BigInteger\Infinity\fraction.h" />
+    <ClInclude Include="rollrat-framework\Collections\BinaryTree.h" />
     <ClInclude Include="rollrat-framework\Crypto\Hash.h" />
     <ClInclude Include="rollrat-framework\Crypto\Sha256.h" />
     <ClInclude Include="rollrat-framework\Crypto\Crypto.h" />
