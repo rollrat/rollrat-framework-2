@@ -1,0 +1,34 @@
+//===----------------------------------------------------------------------===//
+//
+//                          RollRat-FrameWork V2
+//
+//===----------------------------------------------------------------------===//
+//
+//  Blocks.def - 01/26/2018
+//
+//  Copyright (C) 2018. rollrat. All Rights Reserved.
+//
+//===----------------------------------------------------------------------===//
+
+CODE_BLOCK_DEF_UNARY(Output)
+CODE_BLOCK_DEF_UNARY(LogicNot)
+CODE_BLOCK_DEF_UNARY(MathMinus)
+CODE_BLOCK_DEF_UNARY(MathPlus)
+CODE_BLOCK_DEF_UNARY(MathAbs)
+CODE_BLOCK_DEF_UNARY(MathCos)
+CODE_BLOCK_DEF_UNARY(MathSin)
+CODE_BLOCK_DEF_UNARY(MathTan)
+CODE_BLOCK_DEF_UNARY(MathSqrt)
+
+CODE_BLOCK_DEF_BINARY(LogicAnd)
+CODE_BLOCK_DEF_BINARY(LogicOr)
+CODE_BLOCK_DEF_BINARY(LogicXor)
+CODE_BLOCK_DEF_BINARY(LogicShl)
+CODE_BLOCK_DEF_BINARY(LogicShr)
+CODE_BLOCK_DEF_BINARY(MathAdd)
+CODE_BLOCK_DEF_BINARY(MathSub)
+CODE_BLOCK_DEF_BINARY(MathMul)
+CODE_BLOCK_DEF_BINARY(MathDiv)
+CODE_BLOCK_DEF_BINARY(MathCompare)
+CODE_BLOCK_DEF_BINARY(StringConcat)
+CODE_BLOCK_DEF_BINARY(StringCompare)
