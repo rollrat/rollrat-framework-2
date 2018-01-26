@@ -137,6 +137,7 @@
     <ClInclude Include="rollrat-framework\Crypto\Sha256.h" />
     <ClInclude Include="rollrat-framework\Crypto\Crypto.h" />
     <ClInclude Include="rollrat-framework\Encoding\Base64Encoding.h" />
+    <ClInclude Include="rollrat-framework\Encoding\UrlEncoding.h" />
     <ClInclude Include="rollrat-framework\File.h" />
     <ClInclude Include="rollrat-framework\Math\Polynomial.h" />
     <ClInclude Include="rollrat-framework\DateTime.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="rollrat-framework\Crypto\Sha256.c" />
     <ClCompile Include="rollrat-framework\DateTime.cpp" />
     <ClCompile Include="rollrat-framework\Encoding\Base64Encoding.cpp" />
+    <ClCompile Include="rollrat-framework\Encoding\UrlEncoding.cpp" />
     <ClCompile Include="rollrat-framework\File.cpp" />
     <ClCompile Include="rollrat-framework\StringTools.cpp" />
     <ClCompile Include="rollrat-framework\WString.cpp" />
