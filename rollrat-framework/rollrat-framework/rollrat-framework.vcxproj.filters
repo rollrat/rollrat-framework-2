@@ -90,6 +90,9 @@
     <ClInclude Include="rollrat-framework\Code\Type.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="rollrat-framework\Random.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rollrat-framework\StringTools.cpp">
@@ -135,6 +138,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="rollrat-framework\Encoding\UrlEncoding.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\passgen.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

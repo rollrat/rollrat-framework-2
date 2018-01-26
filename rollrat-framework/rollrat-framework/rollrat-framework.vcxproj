@@ -144,6 +144,7 @@
     <ClInclude Include="rollrat-framework\Math\Polynomial.h" />
     <ClInclude Include="rollrat-framework\DateTime.h" />
     <ClInclude Include="rollrat-framework\Defines.h" />
+    <ClInclude Include="rollrat-framework\Random.h" />
     <ClInclude Include="rollrat-framework\Sorting.h" />
     <ClInclude Include="rollrat-framework\WString.h" />
     <ClInclude Include="rollrat-framework\StringTools.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="rollrat-framework\WStringBuilder.cpp" />
     <ClCompile Include="test\test-StringTools.cpp" />
     <ClCompile Include="test\test.cpp" />
+    <ClCompile Include="utils\passgen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="rollrat-framework\Code\Blocks.def" />
