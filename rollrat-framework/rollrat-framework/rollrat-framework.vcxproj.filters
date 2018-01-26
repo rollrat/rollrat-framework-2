@@ -81,6 +81,9 @@
     <ClInclude Include="rollrat-framework\Encoding\UrlEncoding.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="rollrat-framework\Sorting.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rollrat-framework\StringTools.cpp">

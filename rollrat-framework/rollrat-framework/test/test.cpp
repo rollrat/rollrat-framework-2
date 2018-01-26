@@ -20,6 +20,7 @@
 #include "rollrat-framework/Encoding/Base64Encoding.h"
 #include "rollrat-framework/Crypto/Hash.h"
 #include "rollrat-framework/Encoding/UrlEncoding.h"
+#include "rollrat-framework/Sorting.h"
 
 void test_UrlEncoding();
 void test_Hash();

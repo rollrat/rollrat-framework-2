@@ -142,6 +142,7 @@
     <ClInclude Include="rollrat-framework\Math\Polynomial.h" />
     <ClInclude Include="rollrat-framework\DateTime.h" />
     <ClInclude Include="rollrat-framework\Defines.h" />
+    <ClInclude Include="rollrat-framework\Sorting.h" />
     <ClInclude Include="rollrat-framework\WString.h" />
     <ClInclude Include="rollrat-framework\StringTools.h" />
     <ClInclude Include="rollrat-framework\WStringBuffer.h" />
