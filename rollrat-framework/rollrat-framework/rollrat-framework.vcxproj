@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="rollrat-framework\Algorithm.h" />
     <ClInclude Include="rollrat-framework\ChronoTimer.h" />
     <ClInclude Include="rollrat-framework\Code\Block.h" />
     <ClInclude Include="rollrat-framework\Code\Type.h" />

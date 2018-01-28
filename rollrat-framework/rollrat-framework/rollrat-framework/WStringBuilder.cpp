@@ -255,6 +255,15 @@ WStringBuilder::WStringBuilderNode *WStringBuilder::ReplaceInternal(
       count -= last->m_length;
     }
 
+    WStringBuilderNode *del = start_node->m_next;
+    for (; del != last; )
+    {
+      WStringBuilderNode *tmp = del->m_next;
+      delete[] del->m_ptr;
+      delete tmp;
+      del = tmp;
+    }
+
     start_node->m_length = node_offset;
     start_node->m_next = node;
 
