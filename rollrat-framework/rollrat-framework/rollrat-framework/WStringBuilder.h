@@ -52,6 +52,8 @@ public:
   void Append(const wchar_t *str, size_t len);
   void Append(const wchar_t *str);
   size_t Find(const WString& str);
+  /* Do not use this until next update. */
+  void Replace(const WString& src, const WString& tar);
   size_t Length() const;
   WString ToString();
   void Dispose();
@@ -61,6 +63,8 @@ public:
 private:
 
   bool MatchContinue(const WString& str, size_t start_offset, 
+    WStringBuilderNode*  start_node, size_t node_offset);
+  WStringBuilderNode *ReplaceInternal(const WString& src, const WString& tar,
     WStringBuilderNode*  start_node, size_t node_offset);
   WStringBuilderNode *Create();
   void DisposeInternal();

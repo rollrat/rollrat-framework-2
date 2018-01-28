@@ -117,6 +117,36 @@ size_t WStringBuilder::Find(const WString& str)
   return WString::error;
 }
 
+void WStringBuilder::Replace(const WString & src, const WString & tar)
+{
+  WStringBuilderNode *iter = m_head;
+  for (; iter != nullptr; iter = iter->m_next)
+  {
+    if (iter->m_length == 0) continue;
+
+    wchar_t last = iter->m_ptr[iter->m_length - 1];
+    wchar_t *offset;
+
+    iter->m_ptr[iter->m_length - 1] = 0;
+    offset = wcschr(iter->m_ptr, src[0]);
+    iter->m_ptr[iter->m_length - 1] = last;
+
+    if (offset)
+    {
+      iter->m_ptr[iter->m_length - 1] = last;
+      if (MatchContinue(src, 1, iter, offset - iter->m_ptr + 1) == true)
+        iter = ReplaceInternal(src, tar, iter, offset - iter->m_ptr);
+    }
+
+    if (last == src[0])
+    {
+      if (MatchContinue(src, 1, iter->m_next, 0) == true)
+        iter = ReplaceInternal(src, tar, iter, iter->m_length - 1);
+    }
+  }
+  Migration();
+}
+
 size_t WStringBuilder::Length() const
 {
   return m_last->m_offset + m_last->m_length;
@@ -186,6 +216,74 @@ bool WStringBuilder::MatchContinue(const WString& str, size_t start_offset,
 
   return MatchContinue(str, start_offset + start_node->m_length - node_offset,
     start_node->m_next, 0);
+}
+
+WStringBuilder::WStringBuilderNode *WStringBuilder::ReplaceInternal(
+  const WString& src, const WString& tar,
+  WStringBuilderNode * start_node, size_t node_offset)
+{
+  if (node_offset + src.Length() <= start_node->m_length)
+  {
+    if (src.Length() >= tar.Length())
+    {
+      memcpy(start_node->m_ptr + node_offset, tar.Reference(),
+        tar.Length() * sizeof(wchar_t));
+      if (src.Length() > tar.Length())
+      {
+        memmove(start_node->m_ptr + node_offset + tar.Length(),
+          start_node->m_ptr + node_offset + src.Length(),
+          (start_node->m_length - node_offset - src.Length())
+          * sizeof(wchar_t));
+      }
+      return start_node;
+    }
+    else
+    {
+      WStringBuilderNode *node = Create();
+      node->m_length = tar.Length() + start_node->m_length - 
+        node_offset - src.Length();
+      node->m_ptr = new wchar_t[node->m_length];
+
+      memcpy(node->m_ptr, tar.Reference(), tar.Length() * sizeof(wchar_t));
+      memcpy(node->m_ptr + tar.Length(), start_node->m_ptr + node_offset + 
+        src.Length(), (start_node->m_length - node_offset - src.Length()) 
+        * sizeof(wchar_t));
+
+      start_node->m_length = node_offset;
+
+      node->m_next = start_node->m_next;
+      start_node->m_next = node;
+
+      return node;
+    }
+  }
+  else
+  {
+    WStringBuilderNode *last = start_node->m_next;
+    size_t count = src.Length() - start_node->m_length + node_offset;
+    for (; last != nullptr; last = last->m_next)
+    {
+      if (count < last->m_length)
+        break;
+      count -= last->m_length;
+    }
+
+    WStringBuilderNode *node = Create();
+    node->m_length = tar.Length();
+    node->m_ptr = new wchar_t[node->m_length];
+
+    memcpy(node->m_ptr, tar.Reference(), tar.Length() * sizeof(wchar_t));
+
+    start_node->m_length = node_offset;
+    start_node->m_next = node;
+
+    node->m_next = last;
+
+    last->m_ptr += count;
+    last->m_length -= count;
+
+    return node;
+  }
 }
 
 WStringBuilder::WStringBuilderNode *WStringBuilder::Create()

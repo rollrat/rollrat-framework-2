@@ -22,6 +22,7 @@
 #include "rollrat-framework/Encoding/UrlEncoding.h"
 #include "rollrat-framework/Sorting.h"
 
+void test_WStringBuilder();
 void test_UrlEncoding();
 void test_Hash();
 void test_Base64();
@@ -39,15 +40,23 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
+  test_WStringBuilder();
   return 0;
 }
 
 void test_WStringBuilder()
 {
-  WStringBuilder wsb;
-  for (int i = 0; i < 100; i++)
-    wsb.Append("abcdefghijklnmopqrstuvwxyz0123456789");
-  wsb.Insert(0, L"asdf");
+  WStringBuilder wsb(5);
+  wsb.Append("abcde");
+  wsb.Append("fghij");
+  wsb.Append("klnmo");
+  wsb.Append("pqrst");
+  wsb.Append("uvwxy");
+  wsb.Append("z0123");
+  wsb.Append("45678");
+  wsb.Append("9");
+  wsb.Replace("efghijk", "b");
+  wcout << wsb.ToString() << endl;
 }
 
 void test_UrlEncoding()
