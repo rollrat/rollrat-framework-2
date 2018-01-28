@@ -244,3 +244,16 @@ void WStringBuilder::LinkTo()
   m_last->m_next = twsbn;
   m_last = twsbn;
 }
+
+void WStringBuilder::Migration()
+{
+  WStringBuilderNode *iter = m_head;
+
+  iter->m_offset = 0;
+
+  while (iter->m_next != nullptr)
+  {
+    iter->m_next->m_offset = iter->m_length + iter->m_offset;
+    iter = iter->m_next;
+  }
+}

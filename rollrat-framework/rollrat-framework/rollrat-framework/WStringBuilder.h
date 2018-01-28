@@ -68,6 +68,7 @@ private:
   void Ensure();
   bool Expand();
   void LinkTo();
+  void Migration();
 };
 
 }

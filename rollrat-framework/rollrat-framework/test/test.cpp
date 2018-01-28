@@ -39,8 +39,15 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  test_UrlEncoding();
   return 0;
+}
+
+void test_WStringBuilder()
+{
+  WStringBuilder wsb;
+  for (int i = 0; i < 100; i++)
+    wsb.Append("abcdefghijklnmopqrstuvwxyz0123456789");
+  wsb.Insert(0, L"asdf");
 }
 
 void test_UrlEncoding()
