@@ -52,7 +52,6 @@ public:
   void Append(const wchar_t *str, size_t len);
   void Append(const wchar_t *str);
   size_t Find(const WString& str);
-  /* Do not use this until next update. */
   void Replace(const WString& src, const WString& tar);
   size_t Length() const;
   WString ToString();
