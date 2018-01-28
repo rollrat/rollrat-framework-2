@@ -55,7 +55,7 @@ void test_WStringBuilder()
   wsb.Append("z0123");
   wsb.Append("45678");
   wsb.Append("9");
-  wsb.Replace("efghijk", "b");
+  wsb.Replace("b", "c");
   wcout << wsb.ToString() << endl;
 }
 

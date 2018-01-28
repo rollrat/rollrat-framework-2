@@ -222,40 +222,27 @@ WStringBuilder::WStringBuilderNode *WStringBuilder::ReplaceInternal(
   const WString& src, const WString& tar,
   WStringBuilderNode * start_node, size_t node_offset)
 {
+  WStringBuilderNode *node = Create();
+  node->m_length = tar.Length();
+  node->m_ptr = new wchar_t[node->m_length];
+  memcpy(node->m_ptr, tar.Reference(), tar.Length() * sizeof(wchar_t));
+
   if (node_offset + src.Length() <= start_node->m_length)
   {
-    if (src.Length() >= tar.Length())
-    {
-      memcpy(start_node->m_ptr + node_offset, tar.Reference(),
-        tar.Length() * sizeof(wchar_t));
-      if (src.Length() > tar.Length())
-      {
-        memmove(start_node->m_ptr + node_offset + tar.Length(),
-          start_node->m_ptr + node_offset + src.Length(),
-          (start_node->m_length - node_offset - src.Length())
-          * sizeof(wchar_t));
-      }
-      return start_node;
-    }
-    else
-    {
-      WStringBuilderNode *node = Create();
-      node->m_length = tar.Length() + start_node->m_length - 
-        node_offset - src.Length();
-      node->m_ptr = new wchar_t[node->m_length];
+    WStringBuilderNode *node1 = Create();
+    node1->m_length = start_node->m_length - node_offset - src.Length();
+    node1->m_ptr = new wchar_t[node1->m_length];
 
-      memcpy(node->m_ptr, tar.Reference(), tar.Length() * sizeof(wchar_t));
-      memcpy(node->m_ptr + tar.Length(), start_node->m_ptr + node_offset + 
-        src.Length(), (start_node->m_length - node_offset - src.Length()) 
-        * sizeof(wchar_t));
+    memcpy(node1->m_ptr, start_node->m_ptr + node_offset + src.Length(), 
+      (start_node->m_length - node_offset - src.Length()) * sizeof(wchar_t));
 
-      start_node->m_length = node_offset;
+    start_node->m_length = node_offset;
 
-      node->m_next = start_node->m_next;
-      start_node->m_next = node;
+    node1->m_next = start_node->m_next;
+    start_node->m_next = node;
+    node->m_next = node1;
 
-      return node;
-    }
+    return node1;
   }
   else
   {
@@ -267,12 +254,6 @@ WStringBuilder::WStringBuilderNode *WStringBuilder::ReplaceInternal(
         break;
       count -= last->m_length;
     }
-
-    WStringBuilderNode *node = Create();
-    node->m_length = tar.Length();
-    node->m_ptr = new wchar_t[node->m_length];
-
-    memcpy(node->m_ptr, tar.Reference(), tar.Length() * sizeof(wchar_t));
 
     start_node->m_length = node_offset;
     start_node->m_next = node;
