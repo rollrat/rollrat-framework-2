@@ -40,7 +40,7 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  BigInteger bi = "7862465749123483453123784345312848113954321";
+  BigInteger bi = "0";
 
   cout << bi << endl;
 
