@@ -61,7 +61,8 @@ int main_passgen()
     {
       wchar_t specific = L"/+=^$#@!&*"[Random::getRandomNumber() % 10];
       wchar_t upper = L'A' + (Random::getRandomNumber() % ('z' - 'a' + 1));
-      WString plain = WString(specific) + WString(upper) + Sha256::FromString(suits[i] + line).Remove(10);
+      WString plain = WString(specific) + WString(upper) + 
+        Sha256::FromString(suits[i] + line).Remove(10);
       wcout << setw(15) << suits[i] << L": " << plain << endl;
     }
   }

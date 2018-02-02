@@ -40,7 +40,11 @@ int main()
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  test_WStringBuilder();
+  BigInteger bi = "7862465749123483453123784345312848113954321";
+
+  cout << bi << endl;
+
+
   return 0;
 }
 

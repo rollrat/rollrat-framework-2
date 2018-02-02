@@ -818,51 +818,47 @@ void BigBase::init_hex(std::string hex)
   trim();
 }
 
+static uint32_t to_int9(std::string& str, size_t start, size_t count)
+{
+  uint32_t c = 0;
+  for (size_t i = start; i < str.length() && i < count + start; i++)
+  {
+    c *= 10;
+    c += str[i] - '0';
+  }
+  return c;
+}
+
 void BigBase::init_decimal(std::string dec)
 {
-  std::string nstr = dec;
+  size_t len = dec.length();
+  size_t estimate = len * 4;
 
-  size_t len = nstr.length();
-  size_t vlen = len * 4;
-
-  allocate(vlen);
-  memset(blocks, 0, sizeof(uint32_t) * vlen);
-
-  uint8_t *bcd = new uint8_t[len];
-  memset(bcd, 0, sizeof(uint8_t) * len);
-
-  for (int i = len, j = 0; --i >= 0; j++)
+  allocate(estimate);
+  memset(blocks, 0, sizeof(uint32_t) * estimate);
+  
+  size_t count = len % 9;
+  if (count > 0)
   {
-    bcd[j] = nstr[i] & 15;
+    blocks[0] = to_int9(dec, 0, count);
   }
 
-  for (int i = 0; i < vlen; i++)
+  if (len / 9)
   {
-    for (int j = 0; j < vlen - 1; j++)
+    len -= count;
+    for (int i = 0; i < len; i += 9)
     {
-      blocks[j] = (blocks[j] >> 1) | (blocks[j + 1] << 31);
-    }
-    blocks[vlen - 1] >>= 1;
-    blocks[vlen - 1] |= bcd[0] << 31;
-
-    for (int j = 0; j < len - 1; j++)
-    {
-      bcd[j] = (bcd[j] >> 1) | ((bcd[j + 1] << 3) & 8);
-    }
-    bcd[len - 1] >>= 1;
-
-    for (int j = len; --j >= 0; )
-    {
-      if (bcd[j] >= 8)
-        bcd[j] -= 3;
+      uint32_t carry = to_int9(dec, count + i, 9);
+      for (int j = 0; carry; j++)
+      {
+        carry += (uint64_t)(blocks[j]) * 1000000000;
+        blocks[j] = (uint32_t)carry;
+        carry /= 0xFFFFFFFF;
+      }
     }
   }
 
-  delete[] bcd;
-
-  length = vlen;
-
-  *this >>= vlen * 32 - vlen;
+  trim();
 }
 
 void BigBase::trim()
