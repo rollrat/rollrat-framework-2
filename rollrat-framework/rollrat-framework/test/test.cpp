@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <stack>
+#include <future>
 
 #include "Test.h"
 #include "rollrat-framework/WString.h"
@@ -21,6 +22,7 @@
 #include "rollrat-framework/Crypto/Hash.h"
 #include "rollrat-framework/Encoding/UrlEncoding.h"
 #include "rollrat-framework/Sorting.h"
+#include "rollrat-framework/ChronoTimer.h"
 
 void test_WStringBuilder();
 void test_UrlEncoding();
@@ -34,19 +36,39 @@ void test_BigXXX();
 using namespace ofw;
 using namespace std;
 
+BigBase test_Paraller(long beg, long end)
+{
+  long len = end - beg;
+  if (len < 5000)
+  {
+    BigBase bi = "1";
+    for (int i = beg; i < end; i++)
+      bi *= i;
+    return bi;
+  }
+
+  long mid = beg + len / 2;
+  auto handle = async(launch::async, test_Paraller, mid, end);
+  BigBase get = test_Paraller(beg, mid);
+  return get * handle.get();
+}
+
 int main()
 {
 	std::locale::global(std::locale("kor"));
 	std::wcout.imbue(std::locale("kor"));
 	std::wcin.imbue(std::locale("kor"));
 
-  BigInteger bi = "0";
+  ChronoTimer ct;
 
-  cout << bi << endl;
-
+  ct.start();
+  BigBase bi = test_Paraller(1, 100000);
+  ct.finish();
+  cout << *ct << endl;
 
   return 0;
 }
+
 
 void test_WStringBuilder()
 {
