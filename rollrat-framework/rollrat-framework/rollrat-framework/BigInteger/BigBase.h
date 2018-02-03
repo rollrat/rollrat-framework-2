@@ -37,7 +37,7 @@ public:
   BigBase(const char* str);
   BigBase(const std::string str);
 
-  ~BigBase() { }
+  ~BigBase() { delete[] blocks; }
 
   void aly_hex(const std::string str);
   void aly_dec(const std::string str);
