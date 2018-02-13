@@ -120,8 +120,6 @@ void test_Enumerator()
   while (ptr) {
     if (ptr->IsValid() && ptr->NextFolder()) {
       wcout << ptr->GetFullName() << endl;
-      if (ptr->GetFullName().StartsWith(L"C:\\Program Files\\windows nt"))
-        wcout << "asdf";
       stc.push(ptr);
       ptr = new FolderEnumerator(ptr->GetFullName());
 

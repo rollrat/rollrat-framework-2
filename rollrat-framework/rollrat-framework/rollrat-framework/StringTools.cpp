@@ -11,6 +11,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <memory.h>
+#include <string.h>
 #include "StringTools.h"
 #include "Defines.h"
 
@@ -24,7 +25,7 @@ using namespace ofw;
 
 // find zero in string
 static const char *findzero(const char *str)
-{    
+{
   if (!str[0]) return str;
   else if (!str[1]) return str + 1;
   else if (!str[2]) return str + 2;
@@ -43,6 +44,9 @@ static const char *findzero(const char *str)
    or you can make partition routines. */
 size_t ofw::StringTools::strlen(const char *str)
 {
+  if (sizeof(char) != 1)
+    return ::strlen(str);
+
   ptr_type* trim;
 
   // set has zero checker byte
@@ -128,6 +132,9 @@ static const wchar_t *wfindzero(const wchar_t *str)
 
 size_t ofw::StringTools::wcslen(const wchar_t * str)
 {
+  if (sizeof(wchar_t) != 2)
+    return ::wcslen(str);
+
   ptr_type* trim;
 
   // set has zero checker byte
