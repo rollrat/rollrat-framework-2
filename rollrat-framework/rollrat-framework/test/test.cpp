@@ -62,7 +62,7 @@ int main()
   ChronoTimer ct;
 
   ct.start();
-  BigBase bi = test_Paraller(1, 100000);
+  BigBase bi = test_Paraller(1, 200000);
   ct.finish();
   cout << *ct << endl;
 

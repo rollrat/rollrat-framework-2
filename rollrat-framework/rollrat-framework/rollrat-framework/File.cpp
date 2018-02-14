@@ -10,6 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include <stdio.h>
 #include "File.h"
 #include "WString.h"
 
@@ -106,4 +107,40 @@ WString ofw::FolderEnumerator::GetFullName()
 bool ofw::FolderEnumerator::IsValid()
 {
   return ( handle != INVALID_HANDLE_VALUE );
+}
+
+///===-----------------------------------------------------------------------===
+///
+///               File Method
+///
+///===-----------------------------------------------------------------------===
+
+bool ofw::File::Exist(const WString & path)
+{
+  DWORD dwAttrib = GetFileAttributesW(path.Reference());
+
+  return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+    !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+bool ofw::File::Rename(const WString & oldname, const WString & newname)
+{
+  int err;
+  if (!_wrename(oldname.Reference(), newname.Reference()))
+    return true;
+  if (!MoveFileW(oldname.Reference(), newname.Reference()))
+    return true;
+  return false;
+}
+
+bool ofw::File::Move(const WString & oldpath, const WString & newpath)
+{
+  if (!MoveFileW(oldpath.Reference(), newpath.Reference()))
+    return true;
+  return false;
+}
+
+bool ofw::File::Delete(const WString & path)
+{
+  return DeleteFileW(path.Reference());
 }

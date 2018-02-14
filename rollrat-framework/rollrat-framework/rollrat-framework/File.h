@@ -48,6 +48,15 @@ public:
   bool IsValid();
 };
 
+class File
+{
+public:
+  static bool Exist(const WString& path);
+  static bool Rename(const WString& oldname, const WString& newname);
+  static bool Move(const WString& oldpath, const WString& newpath);
+  static bool Delete(const WString& path);
+};
+
 }
 #endif
 

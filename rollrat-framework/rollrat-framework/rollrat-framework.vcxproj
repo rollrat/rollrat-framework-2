@@ -153,6 +153,7 @@
     <ClInclude Include="rollrat-framework\WStringBuffer.h" />
     <ClInclude Include="rollrat-framework\WStringBuilder.h" />
     <ClInclude Include="test\Test.h" />
+    <ClInclude Include="unistd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rollrat-framework\BigInteger\BigBase.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="test\test-StringTools.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="utils\passgen.cpp" />
+    <ClCompile Include="utils\renamer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="rollrat-framework\Code\Blocks.def" />
