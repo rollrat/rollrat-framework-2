@@ -55,7 +55,7 @@ public:
   WString(unsigned long long int);
   WString(float);
   WString(double);
-  WString(WString&& ws) : first(ws.first), last(ws.last), length(length) {}
+  WString(WString&& ws) : first(ws.first), last(ws.last), length(ws.length) { ws.tm = true; }
   WString(const WString& cnt) : WString((const wchar_t *)cnt.first, cnt.length){}
   WString(std::wstring& str) : WString(&str[0], str.length()) { }
   WString(const std::string& str) : WString(str.c_str(), str.length()) { }
@@ -151,9 +151,9 @@ public:
   long int ToLong() const { return (long)ToLongLong(); }
   unsigned long int ToULong() const { return (unsigned long)ToULongLong(); }
   int ToInteger() const { return (int)ToLongLong(); }
-  unsigned int ToUInteger() const { return (int)ToULongLong(); }
+  unsigned int ToUInteger() const { return (unsigned int)ToULongLong(); }
   short int ToShort() const { return (short)ToLongLong(); }
-  unsigned short int ToUShort() const { return (unsigned)ToULongLong(); }
+  unsigned short int ToUShort() const { return (unsigned short)ToULongLong(); }
 
   wchar_t *ToArray() const;
   char *ToAnsi();

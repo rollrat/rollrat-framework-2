@@ -13,6 +13,7 @@
 #include "rollrat-framework/WString.h"
 #include "rollrat-framework/WStringBuilder.h"
 #include "rollrat-framework/File.h"
+#include <algorithm>
 #include <vector>
 #include <tuple>
 #include <iostream>
@@ -20,15 +21,20 @@
 using namespace ofw;
 using namespace std;
 
-static WString Version = "0.1";
+static WString Version = L"0.1";
 static WString SignString = L"._+-=$[]{}()^%!#&";
 
 static bool is_view_option = false;
 static bool view_pattern = false;
+static bool view_pattern_rank = false;
 static bool view_overlap = false;
-static bool view_nonoverlap = false;
 static bool is_test = false;
 static bool is_count = false;
+static bool is_force = false;
+static bool is_digit_letter = false;
+static bool is_space_sign = false;
+static size_t limit_pattern = (size_t)50;
+static bool is_without_extension = false;
 
 typedef enum {
   Alphabet,
@@ -43,9 +49,26 @@ typedef struct {
 
 using token_pair = pair<vector<Word>, int>;
 
-vector<WString> files;
-vector<token_pair> tokens;
-vector<vector<Word>> patterns;
+static vector<WString> files;
+static vector<token_pair> tokens;
+static vector<vector<Word>> patterns;
+static vector<vector<bool>> overlaps;
+
+
+///===-----------------------------------------------------------------------===
+///               Get name form fullname
+///===-----------------------------------------------------------------------===
+WString getFileName(WString fullname) {
+  WString name;
+  if (fullname.Contains(L"/"))
+    name = fullname.Substring(fullname.FindLast(L'/') + 1);
+  else if (fullname.Contains(L"\\"))
+    name = fullname.Substring(fullname.FindLast('\\') + 1);
+  if (is_without_extension && name.FindFirst(L'.')) {
+    return name.Remove(name.FindLast(L'.'));
+  }
+  return name;
+}
 
 ///===-----------------------------------------------------------------------===
 ///               Tokenize
@@ -54,11 +77,7 @@ vector<Word> tokenizeFile(WString fullname) {
   vector<Word> words;
 
   // Get file name form full name.
-  WString name;
-  if (fullname.Contains(L"/"))
-    name = fullname.Substring(fullname.FindLast(L'/') + 1);
-  else if (fullname.Contains(L"\\"))
-    name = fullname.Substring(fullname.FindLast('\\') + 1);
+  WString name = getFileName(fullname);
 
   const wchar_t *ptr = name.Reference();
   while (*ptr) {
@@ -68,18 +87,21 @@ vector<Word> tokenizeFile(WString fullname) {
       word.Type = WordType::Sign;
       while (SignString.FindFirst(*ptr) != WString::error && *ptr)
         builder.Append(*ptr++);
-    } else if (isdigit(*ptr)) {
+    } else if (iswdigit(*ptr) && !is_digit_letter) {
       word.Type = WordType::Digit;
-      while (isdigit(*ptr) && *ptr)
+      while (iswdigit(*ptr) && *ptr)
         builder.Append(*ptr++);
     } else {
       word.Type = WordType::Alphabet;
-      while (!isdigit(*ptr) && 
+      while ((!iswdigit(*ptr) || is_digit_letter) &&
         SignString.FindFirst(*ptr) == WString::error && *ptr)
         builder.Append(*ptr++);
     }
     word.String = builder.ToString();
     words.push_back(word);
+
+    if (words.size() == limit_pattern)
+      break;
   }
   
   return words;
@@ -113,11 +135,11 @@ void buildPattern() {
     }
 
     // If pattern is not found, then add new pattern.
-    if (i != patterns.size()) {
-      patterns.push_back(std::move(tok));
+    if (i == patterns.size()) {
+      patterns.push_back(tok);
     }
     
-    tokens.push_back(token_pair(std::move(tok), i));
+    tokens.push_back(token_pair(tok, i));
   }
 }
 
@@ -145,6 +167,50 @@ vector<bool> checkOverlap(int pattern) {
   }
 
   return overlap;
+}
+
+///===-----------------------------------------------------------------------===
+///               Build Overlap
+///===-----------------------------------------------------------------------===
+void buildOverlap() {
+  for (size_t pattern = 0; pattern < patterns.size(); pattern++) {
+    size_t target_count = patterns[pattern].size();
+    vector<bool> overlap(target_count, true);
+
+    // Find non-overlap token.
+    for (size_t i = 0; i < target_count; i++) {
+      WString target;
+      for (token_pair& token : tokens) {
+        if (token.second == pattern) {
+          if (target.Empty()) {
+            target.CloneSet(token.first[i].String);
+            continue;
+          }
+
+          if (target != token.first[i].String) {
+            overlap[i] = false;
+            break;
+          }
+        }
+      }
+    }
+
+    overlaps.push_back(overlap);
+  }
+}
+
+///===-----------------------------------------------------------------------===
+///               Count patterns
+///===-----------------------------------------------------------------------===
+vector<size_t> countPatterns() {
+  vector<size_t> count(patterns.size());
+  for (size_t i = 0; i < count.size(); i++) {
+    for (auto& v : tokens) {
+      if (v.second == i)
+        count[i]++;
+    }
+  }
+  return count;
 }
 
 ///===-----------------------------------------------------------------------===
@@ -231,6 +297,7 @@ WString getTokenString(token_pair&& token) {
   builder.Append(L'[');
   builder.Append(token.second);
   builder.Append(L']');
+  builder.Append(L' ');
   builder.Append(getPatternString(std::move(token.first)));
   return builder.ToString();
 }
@@ -241,22 +308,26 @@ WString getTokenString(token_pair&& token) {
 void clSpecificOption(int argc, char* argv[]) {
   for (int c = 1; c < argc; c++) {
     WString Cover = std::move(fromUtf8(argv[c]));
-    if (!Cover.CompareTo(L"-view-pattern"))
+    if (!Cover.CompareTo(L"-view-all")) {
       view_pattern = true;
+      view_pattern_rank = true;
+      view_overlap = true;
+    } else if (!Cover.CompareTo(L"-view-pattern"))
+      view_pattern = true;
+    else if (!Cover.CompareTo(L"-view-pattern-rank"))
+      view_pattern_rank = true;
     else if (!Cover.CompareTo(L"-view-overlap"))
       view_overlap = true;
-    else if (!Cover.CompareTo(L"-view-non-verlap"))
-      view_nonoverlap = true;
     else if (!Cover.CompareTo(L"-test"))
       is_test = true;
-    else if (!Cover.CompareTo(L"-count"))
-      is_count = true;
   }
-  is_view_option = view_pattern || view_overlap || view_nonoverlap;
+  is_view_option = view_pattern
+    || view_pattern_rank
+    || view_overlap;
 }
 
 ///===-----------------------------------------------------------------------===
-///               Set renamer sources.
+///               Set renamer source files.
 ///===-----------------------------------------------------------------------===
 void clAddFile(int argc, char* argv[]) {
   int c = 1;
@@ -267,18 +338,93 @@ void clAddFile(int argc, char* argv[]) {
     if (Cover.CompareTo(L"-s")) break;
   }
 
-  while (++c < argc) {
+  size_t count = fromUtf8(argv[++c]).ToUInteger();
+
+  while (count--) {
     WString Cover = std::move(fromUtf8(argv[c]));
     files.push_back(std::move(Cover));
   }
 }
 
 ///===-----------------------------------------------------------------------===
+///               Set renamer source directories.
+///===-----------------------------------------------------------------------===
+void clAddDirectory(int argc, char* argv[]) {
+  int c = 1;
+
+  // Find '-o' flags.
+  for (; c < argc; c++) {
+    WString Cover = std::move(fromUtf8(argv[c]));
+    if (Cover.CompareTo(L"-o")) break;
+  }
+
+  size_t count = fromUtf8(argv[++c]).ToUInteger();
+
+  while (count--) {
+    WString Cover = std::move(fromUtf8(argv[c]));
+    FolderEnumerator fenum(Cover);
+    do {
+      if (fenum.IsFile())
+        files.push_back(std::move(fenum.GetFullName()));
+    } while (fenum.NextFile());
+  }
+}
+
+///===-----------------------------------------------------------------------===
+///               Set option.
+///===-----------------------------------------------------------------------===
+void clRenameOption(int argc, char* argv[]) {
+  for (int c = 1; c < argc; c++) {
+    WString Cover = std::move(fromUtf8(argv[c])); 
+    if (!Cover.CompareTo(L"-count"))
+      is_count = true;
+    else if (!Cover.CompareTo(L"-force"))
+      is_force = true;
+    else if (!Cover.CompareTo(L"-digit-letter"))
+      is_digit_letter = true;
+    else if (!Cover.CompareTo(L"-space-sign"))
+      is_space_sign = true;
+    else if (!Cover.CompareTo(L"-limit-pattern"))
+      limit_pattern = WString(argv[c++]).ToULong();
+    else if (!Cover.CompareTo(L"-without-extension"))
+      is_without_extension = true;
+  }
+
+  if (is_digit_letter)
+    SignString = L"._+-=$[]{}()^%!#& ";
+}
+
+///===-----------------------------------------------------------------------===
 ///               Print help message.
 ///===-----------------------------------------------------------------------===
 void clHelp() {
-  wcout << L"Renamer " << Version << "\n";
+  wcout << L"Renamer ver." << Version << "\n";
   wcout << L"Copyright (C) rollrat. 2018. All rights reserved.\n";
+  wcout << L"\n";
+  wcout << L"  View option:\n";
+  wcout << L"\n";
+  wcout << L"    -view-all : Print all procedure.\n";
+  wcout << L"    -view-pattern : Print renamer pattern.\n";
+  wcout << L"    -view-overlap : Print overlap pattern.\n";
+  wcout << L"\n";
+  wcout << L"\n";
+  wcout << L"  Renamer Option:\n";
+  wcout << L"\n";
+  wcout << L"    -test : Test rename. This option maybe print test output.\n";
+  wcout << L"    -s [count] [path, ...] : Add specific file to source.\n";
+  wcout << L"    -o [count] [path, ...] : Add specific directory to source.\n";
+  wcout << L"\n";
+  wcout << L"\n";
+  wcout << L"  Replace Option:\n";
+  wcout << L"\n";
+  wcout << L"    -count : Tokenize with the number of string.\n";
+  wcout << L"    -force : Force rename, even if there is an error.\n";
+  wcout << L"    -digit-letter : Treat numbers as letter.\n";
+  wcout << L"    -space-sign : Treat space as sign. [Default: Letter]\n";
+  wcout << L"    -limit-pattern [count] : Limit the number of patterns.\n";
+  wcout << L"    -without-extension : \n";
+  wcout << L"\n";
+  wcout << L"\n";
 }
 
 ///===-----------------------------------------------------------------------===
@@ -286,18 +432,94 @@ void clHelp() {
 ///===-----------------------------------------------------------------------===
 void viewOptions() {
   if (view_pattern) {
+    wcout << "=========================================================\n";
+    wcout << "                      View Pattern\n";
+    wcout << "=========================================================\n";
+
     for (auto& v : tokens) {
       wcout << getTokenString(std::move(v)) << "\n";
+    }
+    wcout << "\n";
+  }
+
+  if (view_pattern_rank) {
+    wcout << "=========================================================\n";
+    wcout << "                      View Pattern Rank\n";
+    wcout << "=========================================================\n";
+
+    using pair_type = pair<size_t, WString>;
+    vector<size_t> c = countPatterns();
+    vector<pair_type> s;
+    for (size_t i = 0; i < c.size(); i++) {
+      s.push_back(pair_type(c[i], getPatternString(std::move(patterns[i]))));
+    }
+
+    std::sort(s.begin(), s.end(), [](pair_type& v1, pair_type& v2) {
+      if (v1.first > v2.first) return true;
+      return false;
+    });
+
+    for (size_t i = 0; i < s.size(); i++) {
+      wcout << L"[" << s[i].first << "]" << s[i].second << "\n";
+    }
+    wcout << "\n";
+  }
+
+  if (view_overlap) {
+    wcout << "=========================================================\n";
+    wcout << "                      View Overlap\n";
+    wcout << "=========================================================\n";
+
+    vector<size_t> c = countPatterns();
+
+    for (size_t i = 0; i < overlaps.size(); i++) {
+      size_t first = 0;
+
+      // Find first appeared token.
+      for (size_t j = 0; j < tokens.size(); j++) {
+        if (tokens[j].second == i) {
+          first = j;
+          break;
+        }
+      }
+
+      // Print overlaps.
+      wcout << L"Pattern(" << c[i] << "): " << 
+        getPatternString(std::move(patterns[i])) << "\n";
+      for (size_t j = 0; j < overlaps[i].size(); j++) {
+        //if (j != 0) wcout << "+";
+        if (overlaps[i][j] == true)
+          wcout << tokens[first].first[j].String;
+        else
+          wcout << "?";
+      }
+      wcout << "\n\n";
     }
   }
 }
 
-int main(int argc, char* argv[])
+int main_renamer(int argc, char* argv[])
 {
-  is_count = true;
-  wcout << getPatternString(tokenizeFile(LR"(C:\»õ Æú´õ\llvm-control-pass\CustomPass.cpp)"));
+#if _DEBUG
 
-  //////////////////
+  FolderEnumerator fenum(LR"(C:\Users\rollrat\Desktop\Project)");
+  do {
+    if (fenum.IsFile())
+      files.push_back(std::move(fenum.GetFullName()));
+  } while (fenum.NextFile());
+
+  //is_count = true;
+  //is_without_extension = true;
+  buildPattern();
+  buildOverlap();
+
+  view_pattern = true;
+  view_pattern_rank = true;
+  view_overlap = true;
+  viewOptions();
+
+  return 0;
+#else
 
   if (argc == 1) {
     clHelp();
@@ -306,11 +528,14 @@ int main(int argc, char* argv[])
 
   clSpecificOption(argc, argv);
   clAddFile(argc, argv);
+  clRenameOption(argc, argv);
   buildPattern();
+  buildOverlap();
 
   if (is_view_option) {
     viewOptions();
   }
 
   return 0;
+#endif
 }

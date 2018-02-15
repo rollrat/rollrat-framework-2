@@ -53,7 +53,7 @@ BigBase test_Paraller(long beg, long end)
   return get * handle.get();
 }
 
-int mainc()
+int main()
 {
 	std::locale::global(std::locale("kor"));
 	std::wcout.imbue(std::locale("kor"));
