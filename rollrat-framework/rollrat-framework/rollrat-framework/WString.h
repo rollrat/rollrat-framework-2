@@ -55,7 +55,8 @@ public:
   WString(unsigned long long int);
   WString(float);
   WString(double);
-  WString(const WString& cnt) :WString((const wchar_t *)cnt.first, cnt.length){}
+  WString(WString&& ws) : first(ws.first), last(ws.last), length(length) {}
+  WString(const WString& cnt) : WString((const wchar_t *)cnt.first, cnt.length){}
   WString(std::wstring& str) : WString(&str[0], str.length()) { }
   WString(const std::string& str) : WString(str.c_str(), str.length()) { }
   WString(const std::wstring& wstr) : WString(wstr.c_str(), wstr.length()) { }
@@ -172,6 +173,7 @@ public:
   { return !this->operator>(compare);  }
 
   void Swap(WString& refer);
+  void operator=(WString&& refer);
   void operator=(const WString& refer);
   void CloneSet(const WString& refer);
   WString Clone();

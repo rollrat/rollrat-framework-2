@@ -686,6 +686,17 @@ void WString::Swap(WString& refer)
   std::swap(length, refer.length);
 }
 
+void ofw::WString::operator=(WString && refer)
+{
+  if (first != nullptr && !tm)
+    delete[] first;
+  refer.tm = true;
+  this->tm = false;
+  this->first = refer.first;
+  this->last = refer.last;
+  this->length = refer.length;
+}
+
 void WString::operator=(const WString& refer)
 {
   if (first != nullptr)
