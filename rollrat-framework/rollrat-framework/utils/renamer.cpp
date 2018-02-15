@@ -14,6 +14,7 @@
 #include "rollrat-framework/WStringBuilder.h"
 #include "rollrat-framework/File.h"
 #include <vector>
+#include <tuple>
 #include <iostream>
 
 using namespace ofw;
@@ -27,6 +28,7 @@ static bool view_pattern = false;
 static bool view_overlap = false;
 static bool view_nonoverlap = false;
 static bool is_test = false;
+static bool is_count = false;
 
 typedef enum {
   Alphabet,
@@ -39,24 +41,110 @@ typedef struct {
   WString String;
 } Word;
 
+using token_pair = pair<vector<Word>, int>;
+
 vector<WString> files;
+vector<token_pair> tokens;
+vector<vector<Word>> patterns;
 
 ///===-----------------------------------------------------------------------===
 ///               Tokenize
 ///===-----------------------------------------------------------------------===
-vector<Word> tokenFiles() {
+vector<Word> tokenizeFile(WString fullname) {
   vector<Word> words;
-  for (WString fullname : files) {
-    // Get file name form full name.
-    WString name;
-    if (name.Contains(L"/"))
-      name = name.Substring(name.FindLast(L'/'));
-    else if (name.Contains(L"\\"))
-      name = name.Substring(name.FindLast('\\'));
 
+  // Get file name form full name.
+  WString name;
+  if (fullname.Contains(L"/"))
+    name = fullname.Substring(fullname.FindLast(L'/') + 1);
+  else if (fullname.Contains(L"\\"))
+    name = fullname.Substring(fullname.FindLast('\\') + 1);
 
+  const wchar_t *ptr = name.Reference();
+  while (*ptr) {
+    Word word;
+    WStringBuilder builder(50);
+    if (SignString.FindFirst(*ptr) != WString::error) {
+      word.Type = WordType::Sign;
+      while (SignString.FindFirst(*ptr) != WString::error && *ptr)
+        builder.Append(*ptr++);
+    } else if (isdigit(*ptr)) {
+      word.Type = WordType::Digit;
+      while (isdigit(*ptr) && *ptr)
+        builder.Append(*ptr++);
+    } else {
+      word.Type = WordType::Alphabet;
+      while (!isdigit(*ptr) && 
+        SignString.FindFirst(*ptr) == WString::error && *ptr)
+        builder.Append(*ptr++);
+    }
+    word.String = builder.ToString();
+    words.push_back(word);
   }
+  
   return words;
+}
+
+///===-----------------------------------------------------------------------===
+///               Token Equal
+///===-----------------------------------------------------------------------===
+bool tokenEqual(vector<Word>& token1, vector<Word>& token2) {
+  if (token1.size() != token2.size()) return false;
+  for (size_t i = 0; i < token1.size(); i++) {
+    if (token1[i].Type != token2[i].Type) return false;
+    if (is_count && token1[i].String.Length() != token2[i].String.Length())
+      return false;
+  }
+  return true;
+}
+
+///===-----------------------------------------------------------------------===
+///               Build Pattern
+///===-----------------------------------------------------------------------===
+void buildPattern() {
+  for (WString path : files) {
+    vector<Word> tok = tokenizeFile(path);
+
+    // Find previous overlap pattern.
+    size_t i = 0;
+    for ( ; i < patterns.size(); i++) {
+      if (tokenEqual(patterns[i], tok))
+        break;
+    }
+
+    // If pattern is not found, then add new pattern.
+    if (i != patterns.size()) {
+      patterns.push_back(std::move(tok));
+    }
+    
+    tokens.push_back(token_pair(std::move(tok), i));
+  }
+}
+
+///===-----------------------------------------------------------------------===
+///               Check Overlap
+///===-----------------------------------------------------------------------===
+vector<bool> checkOverlap(int pattern) {
+  size_t target_count = patterns[pattern].size();
+  vector<bool> overlap(target_count, true);
+  for (size_t i = 0; i < target_count; i++) {
+    WString target;
+    for (token_pair& token : tokens) {
+      if (token.second == pattern) {
+        if (target.Empty()) {
+          target.CloneSet(token.first[i].String);
+          continue;
+        }
+
+        if (target != token.first[i].String) {
+          overlap[i] = false;
+          break;
+        }
+      }
+    }
+  }
+
+  return overlap;
 }
 
 ///===-----------------------------------------------------------------------===
@@ -113,6 +201,43 @@ WString fromUtf8(char *literal) {
   return wb.ToString();
 }
 
+///===-----------------------------------------------------------------------===
+///               Pattern to string.
+///===-----------------------------------------------------------------------===
+WString getPatternString(vector<Word>&& pattern) {
+  WStringBuilder builder;
+  for (size_t i = 0; i < pattern.size(); i++) {
+    if (i != 0) builder.Append(L'+');
+    switch (pattern[i].Type)
+    {
+    case WordType::Alphabet: builder.Append(L"Alpha"); break;
+    case WordType::Digit: builder.Append(L"Digit"); break;
+    case WordType::Sign: builder.Append(L"Sign"); break;
+    }
+    if (is_count) {
+      builder.Append(L'(');
+      builder.Append(pattern[i].String.Length());
+      builder.Append(L')');
+    }
+  }
+  return builder.ToString();
+}
+
+///===-----------------------------------------------------------------------===
+///               Token to string.
+///===-----------------------------------------------------------------------===
+WString getTokenString(token_pair&& token) {
+  WStringBuilder builder;
+  builder.Append(L'[');
+  builder.Append(token.second);
+  builder.Append(L']');
+  builder.Append(getPatternString(std::move(token.first)));
+  return builder.ToString();
+}
+
+///===-----------------------------------------------------------------------===
+///               Set renamer state option.
+///===-----------------------------------------------------------------------===
 void clSpecificOption(int argc, char* argv[]) {
   for (int c = 1; c < argc; c++) {
     WString Cover = std::move(fromUtf8(argv[c]));
@@ -124,10 +249,15 @@ void clSpecificOption(int argc, char* argv[]) {
       view_nonoverlap = true;
     else if (!Cover.CompareTo(L"-test"))
       is_test = true;
+    else if (!Cover.CompareTo(L"-count"))
+      is_count = true;
   }
   is_view_option = view_pattern || view_overlap || view_nonoverlap;
 }
 
+///===-----------------------------------------------------------------------===
+///               Set renamer sources.
+///===-----------------------------------------------------------------------===
 void clAddFile(int argc, char* argv[]) {
   int c = 1;
 
@@ -143,14 +273,32 @@ void clAddFile(int argc, char* argv[]) {
   }
 }
 
+///===-----------------------------------------------------------------------===
+///               Print help message.
+///===-----------------------------------------------------------------------===
 void clHelp() {
   wcout << L"Renamer " << Version << "\n";
   wcout << L"Copyright (C) rollrat. 2018. All rights reserved.\n";
 }
 
+///===-----------------------------------------------------------------------===
+///               Print option
+///===-----------------------------------------------------------------------===
+void viewOptions() {
+  if (view_pattern) {
+    for (auto& v : tokens) {
+      wcout << getTokenString(std::move(v)) << "\n";
+    }
+  }
+}
 
 int main(int argc, char* argv[])
 {
+  is_count = true;
+  wcout << getPatternString(tokenizeFile(LR"(C:\»õ Æú´õ\llvm-control-pass\CustomPass.cpp)"));
+
+  //////////////////
+
   if (argc == 1) {
     clHelp();
     return 0;
@@ -158,6 +306,11 @@ int main(int argc, char* argv[])
 
   clSpecificOption(argc, argv);
   clAddFile(argc, argv);
+  buildPattern();
+
+  if (is_view_option) {
+    viewOptions();
+  }
 
   return 0;
 }
