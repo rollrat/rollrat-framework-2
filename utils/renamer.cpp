@@ -35,6 +35,7 @@ static bool is_digit_letter = false;
 static bool is_space_sign = false;
 static size_t limit_pattern = (size_t)50;
 static bool is_without_extension = false;
+static bool is_diff_overlap = false;
 
 typedef enum {
   Alphabet,
@@ -64,7 +65,7 @@ WString getFileName(WString fullname) {
     name = fullname.Substring(fullname.FindLast(L'/') + 1);
   else if (fullname.Contains(L"\\"))
     name = fullname.Substring(fullname.FindLast('\\') + 1);
-  if (is_without_extension && name.FindFirst(L'.')) {
+  if (is_without_extension && name.FindFirst(L'.') != WString::error) {
     return name.Remove(name.FindLast(L'.'));
   }
   return name;
@@ -200,6 +201,13 @@ void buildOverlap() {
 }
 
 ///===-----------------------------------------------------------------------===
+///               Diff Overlap
+///===-----------------------------------------------------------------------===
+void buildDiff() {
+
+}
+
+///===-----------------------------------------------------------------------===
 ///               Count patterns
 ///===-----------------------------------------------------------------------===
 vector<size_t> countPatterns() {
@@ -307,7 +315,7 @@ WString getTokenString(token_pair&& token) {
 ///===-----------------------------------------------------------------------===
 void clSpecificOption(int argc, char* argv[]) {
   for (int c = 1; c < argc; c++) {
-    WString Cover = std::move(fromUtf8(argv[c]));
+    WString Cover = fromUtf8(argv[c]);
     if (!Cover.CompareTo(L"-view-all")) {
       view_pattern = true;
       view_pattern_rank = true;
@@ -334,14 +342,14 @@ void clAddFile(int argc, char* argv[]) {
 
   // Find '-s' flags.
   for ( ; c < argc; c++) {
-    WString Cover = std::move(fromUtf8(argv[c]));
+    WString Cover = fromUtf8(argv[c]);
     if (Cover.CompareTo(L"-s")) break;
   }
 
   size_t count = fromUtf8(argv[++c]).ToUInteger();
 
   while (count--) {
-    WString Cover = std::move(fromUtf8(argv[c]));
+    WString Cover = fromUtf8(argv[c]);
     files.push_back(std::move(Cover));
   }
 }
@@ -354,14 +362,14 @@ void clAddDirectory(int argc, char* argv[]) {
 
   // Find '-o' flags.
   for (; c < argc; c++) {
-    WString Cover = std::move(fromUtf8(argv[c]));
+    WString Cover = fromUtf8(argv[c]);
     if (Cover.CompareTo(L"-o")) break;
   }
 
   size_t count = fromUtf8(argv[++c]).ToUInteger();
 
   while (count--) {
-    WString Cover = std::move(fromUtf8(argv[c]));
+    WString Cover = fromUtf8(argv[c]);
     FolderEnumerator fenum(Cover);
     do {
       if (fenum.IsFile())
@@ -373,9 +381,9 @@ void clAddDirectory(int argc, char* argv[]) {
 ///===-----------------------------------------------------------------------===
 ///               Set option.
 ///===-----------------------------------------------------------------------===
-void clRenameOption(int argc, char* argv[]) {
+void clReplaceOption(int argc, char* argv[]) {
   for (int c = 1; c < argc; c++) {
-    WString Cover = std::move(fromUtf8(argv[c])); 
+    WString Cover = fromUtf8(argv[c]); 
     if (!Cover.CompareTo(L"-count"))
       is_count = true;
     else if (!Cover.CompareTo(L"-force"))
@@ -385,9 +393,13 @@ void clRenameOption(int argc, char* argv[]) {
     else if (!Cover.CompareTo(L"-space-sign"))
       is_space_sign = true;
     else if (!Cover.CompareTo(L"-limit-pattern"))
-      limit_pattern = WString(argv[c++]).ToULong();
+      limit_pattern = WString(argv[++c]).ToULong();
     else if (!Cover.CompareTo(L"-without-extension"))
       is_without_extension = true;
+
+    // Replace what?
+    else if (!Cover.CompareTo(L"-diff-overlap"))
+      is_diff_overlap = true;
   }
 
   if (is_digit_letter)
@@ -422,7 +434,8 @@ void clHelp() {
   wcout << L"    -digit-letter : Treat numbers as letter.\n";
   wcout << L"    -space-sign : Treat space as sign. [Default: Letter]\n";
   wcout << L"    -limit-pattern [count] : Limit the number of patterns.\n";
-  wcout << L"    -without-extension : \n";
+  wcout << L"    -without-extension : Pattern maching without extension.\n";
+  wcout << L"    -diff-overlap : If  \n";
   wcout << L"\n";
   wcout << L"\n";
 }
@@ -498,8 +511,12 @@ void viewOptions() {
   }
 }
 
-int main_renamer(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
+  std::locale::global(std::locale("kor"));
+  std::wcout.imbue(std::locale("kor"));
+  std::wcin.imbue(std::locale("kor"));
+
 #if _DEBUG
 
   FolderEnumerator fenum(LR"(C:\Users\rollrat\Desktop\Project)");
@@ -508,10 +525,11 @@ int main_renamer(int argc, char* argv[])
       files.push_back(std::move(fenum.GetFullName()));
   } while (fenum.NextFile());
 
-  //is_count = true;
-  //is_without_extension = true;
+  is_count = true;
+  is_without_extension = true;
   buildPattern();
   buildOverlap();
+  if (is_diff_overlap) buildDiff();
 
   view_pattern = true;
   view_pattern_rank = true;
@@ -528,9 +546,10 @@ int main_renamer(int argc, char* argv[])
 
   clSpecificOption(argc, argv);
   clAddFile(argc, argv);
-  clRenameOption(argc, argv);
+  clReplaceOption(argc, argv);
   buildPattern();
   buildOverlap();
+  if (is_diff_overlap) buildDiff();
 
   if (is_view_option) {
     viewOptions();
