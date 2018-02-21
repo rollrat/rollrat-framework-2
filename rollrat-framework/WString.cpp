@@ -690,6 +690,7 @@ void WString::Swap(WString& refer)
 WString& ofw::WString::operator=(WString && refer)
 {
   this->Swap(refer);
+  refer.tm = this->tm;
   this->tm = false;
   return *this;
 }
