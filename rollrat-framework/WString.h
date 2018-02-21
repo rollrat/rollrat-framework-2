@@ -173,8 +173,8 @@ public:
   { return !this->operator>(compare);  }
 
   void Swap(WString& refer);
-  void operator=(WString&& refer);
-  void operator=(const WString& refer);
+  WString& operator=(WString&& refer);
+  WString& operator=(const WString& refer);
   void CloneSet(const WString& refer);
   WString Clone();
 

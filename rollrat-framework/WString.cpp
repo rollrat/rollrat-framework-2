@@ -681,23 +681,20 @@ WString::Utf8Array WString::ToUtf8(bool file_bom)
 
 void WString::Swap(WString& refer)
 {
+  // "swap" function will probably call "move" fucntion.
   std::swap(first, refer.first);
   std::swap(last, refer.last);
   std::swap(length, refer.length);
 }
 
-void ofw::WString::operator=(WString && refer)
+WString& ofw::WString::operator=(WString && refer)
 {
-  if (first != nullptr && !tm)
-    delete[] first;
-  refer.tm = true;
+  this->Swap(refer);
   this->tm = false;
-  this->first = refer.first;
-  this->last = refer.last;
-  this->length = refer.length;
+  return *this;
 }
 
-void WString::operator=(const WString& refer)
+WString& WString::operator=(const WString& refer)
 {
   if (first != nullptr)
     delete[] first;
@@ -707,6 +704,7 @@ void WString::operator=(const WString& refer)
     last = first + length - 1;
     memcpy(first, refer.first, (length + 1) * sizeof(wchar_t));
   }
+  return *this;
 }
 
 void WString::CloneSet(const WString& refer)
