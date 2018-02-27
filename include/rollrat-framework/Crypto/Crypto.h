@@ -13,7 +13,7 @@
 #ifndef _CRYPTO_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _CRYPTO_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "Crypto/Hash.h"
+#include "rollrat-framework/Crypto/Hash.h"
 
 namespace ofw {
 

@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "rollrat-framework/Crypto.h"
+#include "rollrat-framework/Crypto/Crypto.h"
 
 using namespace ofw;
 

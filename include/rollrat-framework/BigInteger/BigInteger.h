@@ -13,7 +13,7 @@
 #ifndef _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "BigInteger/BigBase.h"
+#include "rollrat-framework/BigInteger/BigBase.h"
 
 namespace ofw {
 

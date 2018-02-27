@@ -13,8 +13,8 @@
 #ifndef _URL_ENCODING_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _URL_ENCODING_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "WString.h"
-#include "WStringBuilder.h"
+#include "rollrat-framework/WString.h"
+#include "rollrat-framework/WStringBuilder.h"
 
 namespace ofw {
 

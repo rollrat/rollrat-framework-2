@@ -42,7 +42,7 @@ const wchar_t *suits[] = {
 
 static const size_t count = (sizeof suits) / sizeof(wchar_t*);
 
-int main_passgen()
+int main()
 {
   std::locale::global(std::locale("kor"));
   std::wcout.imbue(std::locale("kor"));

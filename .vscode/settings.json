@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "sha256.h": "c"
+        "sha256.h": "c",
+        "vector": "cpp"
     }
 }

@@ -13,9 +13,9 @@
 #ifndef _HASH_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _HASH_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "Crypto/Sha256.h"
-#include "WString.h"
-#include "WStringBuffer.h"
+#include "rollrat-framework/Crypto/Sha256.h"
+#include "rollrat-framework/WString.h"
+#include "rollrat-framework/WStringBuffer.h"
 
 namespace ofw {
 

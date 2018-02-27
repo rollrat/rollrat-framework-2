@@ -13,7 +13,7 @@
 #ifndef _FILE_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _FILE_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "Defines.h"
+#include "rollrat-framework/Defines.h"
 
 // This class operates only in Windows environments.
 #ifdef _OS_WINDOWS

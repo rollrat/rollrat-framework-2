@@ -14,8 +14,8 @@
 #define _TYPE_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <stdint.h>
-#include "BigInteger/BigInteger.h"
-#include "WString.h"
+#include "rollrat-framework/BigInteger/BigInteger.h"
+#include "rollrat-framework/WString.h"
 
 namespace ofw
 {

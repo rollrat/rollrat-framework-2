@@ -16,7 +16,7 @@
 #include <iostream>
 
 #include "Test.h"
-#include "../rollrat-framework/StringTools.h"
+#include "rollrat-framework/StringTools.h"
 
 #define L1(x) x x x x
 #define L2(x) L1(x) L1(x) L1(x) L1(x)

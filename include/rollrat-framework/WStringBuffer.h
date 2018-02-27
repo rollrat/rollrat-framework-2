@@ -15,7 +15,7 @@
 
 #include <memory.h>
 
-#include "WString.h"
+#include "rollrat-framework/WString.h"
 
 namespace ofw {
 

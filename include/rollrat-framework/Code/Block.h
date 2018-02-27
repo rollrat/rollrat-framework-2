@@ -14,8 +14,8 @@
 #define _BLOCK_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include <vector>
-#include "WString.h"
-#include "Code/Type.h"
+#include "rollrat-framework/WString.h"
+#include "rollrat-framework/Code/Type.h"
 
 namespace ofw
 {

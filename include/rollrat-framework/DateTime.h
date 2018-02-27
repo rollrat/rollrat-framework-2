@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <chrono>
 
-#include "WStringBuilder.h"
+#include "rollrat-framework/WStringBuilder.h"
 
 namespace ofw {
 

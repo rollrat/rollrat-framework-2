@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "rollrat-framework/UrlEncoding.h"
+#include "rollrat-framework/Encoding/UrlEncoding.h"
 
 using namespace ofw;
 

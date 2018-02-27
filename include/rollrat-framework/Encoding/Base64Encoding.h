@@ -13,7 +13,7 @@
 #ifndef _BASE64_ENCODING_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _BASE64_ENCODING_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include "WString.h"
+#include "rollrat-framework/WString.h"
 
 namespace ofw {
 

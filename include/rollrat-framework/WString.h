@@ -16,8 +16,8 @@
 #include <memory>
 #include <string>
 
-#include "Collections/Array.h"
-#include "StringTools.h"
+#include "rollrat-framework/Collections/Array.h"
+#include "rollrat-framework/StringTools.h"
 
 namespace ofw {
 
