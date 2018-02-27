@@ -14,7 +14,7 @@
 #include <memory.h>
 #include <string.h>
 
-#include "Crypto/Sha256.h"
+#include "rollrat-framework/Crypto/Sha256.h"
 
 #define _Rotate_Left(x, r, n, t)  ((t)((x) << (r)) | (t)((x) >> ((n)-(r))))
 #define _Rotate_Right(x, r, n, t)  ((t)((x) >> (r)) | (t)((x) << ((n)-(r))))

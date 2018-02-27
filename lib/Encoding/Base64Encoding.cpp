@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Encoding/Base64Encoding.h"
-#include "WStringBuffer.h"
+#include "rollrat-framework/Encoding/Base64Encoding.h"
+#include "rollrat-framework/WStringBuffer.h"
 
 using namespace ofw;
 

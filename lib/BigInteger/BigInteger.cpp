@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "BigInteger/BigInteger.h"
+#include "rollrat-framework/BigInteger/BigInteger.h"
 
 using namespace ofw;
 

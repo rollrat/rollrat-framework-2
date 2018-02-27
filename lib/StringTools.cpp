@@ -10,10 +10,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "StringTools.h"
+#include "rollrat-framework/StringTools.h"
 #include <memory.h>
 #include <string.h>
-#include "Defines.h"
+#include "rollrat-framework/Defines.h"
 
 using namespace ofw;
 

@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "WStringBuilder.h"
+#include "rollrat-framework/WStringBuilder.h"
 
 using namespace ofw;
 
