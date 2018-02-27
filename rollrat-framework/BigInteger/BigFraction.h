@@ -15,19 +15,16 @@
 
 #include "BigInteger/BigInteger.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class BigFraction
-{
+class BigFraction {
   typedef BigFraction this_type;
   typedef BigInteger integer_operation;
 
   mutable integer_operation high;
   mutable integer_operation low;
 
-public:
-
+ public:
   BigFraction();
   BigFraction(std::string wstr);
   explicit BigFraction(integer_operation io);
@@ -65,31 +62,24 @@ public:
 
   std::string fraction_point(size_t valid_point = 10) const;
 
-  friend std::ostream& operator<<(std::ostream& os, const this_type& refer)
-  {
+  friend std::ostream& operator<<(std::ostream& os, const this_type& refer) {
     os << *refer;
     return os;
   }
-
 };
 
-inline BigFraction operator"" _fr(const char* str, size_t length)
-{
-  const char * delimeter = strchr(str, '/');
-  if (delimeter)
-  {
+inline BigFraction operator"" _fr(const char* str, size_t length) {
+  const char* delimeter = strchr(str, '/');
+  if (delimeter) {
     char buffer[256];
     memcpy(buffer, str, delimeter - str);
     buffer[delimeter - str] = 0;
 
-    return BigFraction{ std::string(buffer), std::string(delimeter + 1) };
-  }
-  else
-  {
-    const char * delimeter = strchr(str, '.');
+    return BigFraction{std::string(buffer), std::string(delimeter + 1)};
+  } else {
+    const char* delimeter = strchr(str, '.');
 
-    if (delimeter)
-    {
+    if (delimeter) {
       char buffer_high[256];
       char buffer_low[256];
       int lowlen = length - (delimeter - str);
@@ -101,20 +91,17 @@ inline BigFraction operator"" _fr(const char* str, size_t length)
       memcpy(buffer_high, str, delimeter - str);
       memcpy(buffer_high + (delimeter - str), delimeter + 1, lowlen + 1);
 
-      return BigFraction{ std::string(buffer_high), std::string(buffer_low) };
-    }
-    else
-    {
-      return BigFraction{ std::string(str) };
+      return BigFraction{std::string(buffer_high), std::string(buffer_low)};
+    } else {
+      return BigFraction{std::string(str)};
     }
   }
 }
 
-inline BigFraction operator"" _fr(unsigned long long i)
-{
-  return BigFraction{ std::to_string(i) };
+inline BigFraction operator"" _fr(unsigned long long i) {
+  return BigFraction{std::to_string(i)};
 }
 
-}
+}  // namespace ofw
 
 #endif

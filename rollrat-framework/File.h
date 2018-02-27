@@ -18,24 +18,22 @@
 // This class operates only in Windows environments.
 #ifdef _OS_WINDOWS
 
-#include <Windows.h>
 #include <Shlwapi.h>
-#include <memory>
+#include <Windows.h>
 #include <functional>
+#include <memory>
 
 #include "WString.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class FolderEnumerator
-{
+class FolderEnumerator {
   HANDLE handle;
   WString current_file;
   WString path;
   WIN32_FIND_DATAW current_data;
 
-public:
+ public:
   FolderEnumerator(const WString& dir);
   ~FolderEnumerator();
 
@@ -48,16 +46,15 @@ public:
   bool IsValid();
 };
 
-class File
-{
-public:
+class File {
+ public:
   static bool Exist(const WString& path);
   static bool Rename(const WString& oldname, const WString& newname);
   static bool Move(const WString& oldpath, const WString& newpath);
   static bool Delete(const WString& path);
 };
 
-}
+}  // namespace ofw
 #endif
 
 #endif

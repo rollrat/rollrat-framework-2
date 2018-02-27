@@ -10,26 +10,22 @@
 //
 //===----------------------------------------------------------------------===//
 
-
 #ifndef _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _BIGINTEGER_9bf1541fdf7efd41b7b39543fd870ac4_
 
 #include "BigInteger/BigBase.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class BigInteger
-{
+class BigInteger {
   typedef BigInteger this_type;
 
   BigBase base;
-  int     _sign = 0;
+  int _sign = 0;
 
   explicit BigInteger(BigBase v, int s);
 
-public:
-
+ public:
   BigInteger();
   BigInteger(uint32_t uiptr);
   BigInteger(int32_t iptr);
@@ -81,23 +77,20 @@ public:
   this_type abs() const;
   size_t length() const;
 
-  friend std::ostream& operator<<(std::ostream& os, const BigInteger& refer)
-  {
+  friend std::ostream& operator<<(std::ostream& os, const BigInteger& refer) {
     os << *refer;
     return os;
   }
 };
 
-inline BigInteger operator"" _i(const char* str, size_t length)
-{
-  return BigInteger{ str };
+inline BigInteger operator"" _i(const char* str, size_t length) {
+  return BigInteger{str};
 }
 
-inline BigInteger operator"" _i(unsigned long long value)
-{
-  return BigInteger{ (uint32_t)value };
+inline BigInteger operator"" _i(unsigned long long value) {
+  return BigInteger{(uint32_t)value};
 }
 
-}
+}  // namespace ofw
 
 #endif

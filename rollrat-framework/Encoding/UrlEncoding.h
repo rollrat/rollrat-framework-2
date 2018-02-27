@@ -16,17 +16,14 @@
 #include "WString.h"
 #include "WStringBuilder.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class UrlEncoding
-{
-public:
-
+class UrlEncoding {
+ public:
   using UrlEncodingArray = ReadOnlyArray<unsigned char>;
 
   static WString UrlEncode(unsigned char *bytes, size_t size);
-  static WString UrlEncode(const UrlEncodingArray& bat) {
+  static WString UrlEncode(const UrlEncodingArray &bat) {
     return UrlEncode(bat.Array(), bat.Size());
   }
   static WString UrlEncode(const char *chs) {
@@ -36,7 +33,7 @@ public:
   static WString UrlEncode(const wchar_t *wchs) {
     return UrlEncode(wchs, StringTools::wcslen(wchs));
   }
-  static WString UrlEncode(const WString& refer) {
+  static WString UrlEncode(const WString &refer) {
     return UrlEncode(refer.Reference(), refer.Length());
   }
 
@@ -44,12 +41,11 @@ public:
   static WString UrlDecode(const wchar_t *wchs) {
     return UrlDecode(wchs, StringTools::wcslen(wchs));
   }
-  static WString UrlDecode(const WString& refer) {
+  static WString UrlDecode(const WString &refer) {
     return UrlDecode(refer.Reference(), refer.Length());
   }
-
 };
 
-}
+}  // namespace ofw
 
 #endif

@@ -13,18 +13,15 @@
 #ifndef _RANDOM_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _RANDOM_9bf1541fdf7efd41b7b39543fd870ac4_
 
-#include <random>
 #include <cmath>
-#include <vector>
+#include <random>
 #include <string>
+#include <vector>
 
-namespace ofw
-{
+namespace ofw {
 
-class Random
-{
-public:
-
+class Random {
+ public:
   using rand_type = unsigned long long;
 
   Random(rand_type lvalue, rand_type rvalue, rand_type seed) {
@@ -32,13 +29,10 @@ public:
     std::mt19937_64 rnd(seed);
     std::vector<bool> overlap_check(size);
 
-    for (rand_type i = 0; i < size; i++) 
-    {
-      do 
-      {
+    for (rand_type i = 0; i < size; i++) {
+      do {
         rand_type real = rnd() % size + lvalue;
-        if (!overlap_check[real - lvalue]) 
-        {
+        if (!overlap_check[real - lvalue]) {
           vec.push_back(real);
           overlap_check[real - lvalue] = true;
           break;
@@ -48,34 +42,25 @@ public:
   }
 
   Random(rand_type lvalue, rand_type rvalue)
-    : Random(lvalue, rvalue, std::random_device()()) { }
+      : Random(lvalue, rvalue, std::random_device()()) {}
 
-  inline rand_type operator[](rand_type index) const
-  {
-    return vec[index];
-  }
+  inline rand_type operator[](rand_type index) const { return vec[index]; }
 
-  inline rand_type size() const
-  {
-    return vec.size();
-  }
+  inline rand_type size() const { return vec.size(); }
 
-  static rand_type getRandomNumber(rand_type seed) 
-  {
+  static rand_type getRandomNumber(rand_type seed) {
     std::mt19937_64 rnd(seed);
     return rnd();
   }
 
-  static rand_type getRandomNumber() 
-  {
+  static rand_type getRandomNumber() {
     return getRandomNumber(std::random_device()());
   }
 
-private:
+ private:
   std::vector<rand_type> vec;
 };
 
-}
-
+}  // namespace ofw
 
 #endif

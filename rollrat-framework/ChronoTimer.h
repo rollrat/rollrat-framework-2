@@ -15,11 +15,9 @@
 
 #include <chrono>
 
-namespace ofw
-{
+namespace ofw {
 
-class ChronoTimer
-{
+class ChronoTimer {
   // OS dependent type.
   using timer_type = std::chrono::high_resolution_clock;
 
@@ -27,13 +25,14 @@ class ChronoTimer
   timer_type::time_point end;
   std::chrono::duration<long double> gap;
 
-public:
-
+ public:
   void start() { begin = timer_type::now(); }
-  void finish() { end = timer_type::now(); gap = end - begin; }
+  void finish() {
+    end = timer_type::now();
+    gap = end - begin;
+  }
   long double operator*() { return gap.count(); }
 };
-
-}
+}  // namespace ofw
 
 #endif

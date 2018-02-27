@@ -15,12 +15,10 @@
 
 #include "Defines.h"
 
-namespace ofw
-{
+namespace ofw {
 
-template<typename type>
-type popcount(type target)
-{
+template <typename type>
+type popcount(type target) {
 #ifdef _COMPILER_GCC
   return __builitin_popcount(target);
 #else
@@ -30,7 +28,6 @@ type popcount(type target)
   return target * 0x01010101 >> 24;
 #endif
 }
-
-}
+}  // namespace ofw
 
 #endif

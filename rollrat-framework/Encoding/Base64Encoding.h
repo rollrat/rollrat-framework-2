@@ -15,34 +15,30 @@
 
 #include "WString.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class Base64Encoding
-{
-public:
-
+class Base64Encoding {
+ public:
   using Base64Array = ReadOnlyArray<unsigned char>;
 
   static WString Base64Encode(unsigned char *bytes, size_t size);
-  static WString Base64Encode(const Base64Array& bat) {
+  static WString Base64Encode(const Base64Array &bat) {
     return Base64Encode(bat.Array(), bat.Size());
   }
-  static WString Base64Encode(const WString& refer) {
-    return Base64Encode((unsigned char *)refer.Reference(), 
-      refer.Length() * sizeof(wchar_t)); 
+  static WString Base64Encode(const WString &refer) {
+    return Base64Encode((unsigned char *)refer.Reference(),
+                        refer.Length() * sizeof(wchar_t));
   }
-  static WString Base64Encode(const wchar_t *wchs) { 
-    return Base64Encode((unsigned char *)wchs, 
-      StringTools::wcslen(wchs) * sizeof(wchar_t)); 
+  static WString Base64Encode(const wchar_t *wchs) {
+    return Base64Encode((unsigned char *)wchs,
+                        StringTools::wcslen(wchs) * sizeof(wchar_t));
   }
   static WString Base64Encode(const char *chs) {
-    return Base64Encode((unsigned char *)chs,
-      StringTools::strlen(chs));
+    return Base64Encode((unsigned char *)chs, StringTools::strlen(chs));
   }
 
   static Base64Array Base64Decode(const wchar_t *wchs, size_t size);
-  static Base64Array Base64Decode(const WString& refer) {
+  static Base64Array Base64Decode(const WString &refer) {
     return Base64Decode(refer.Reference(), refer.Length());
   }
   static Base64Array Base64Decode(const wchar_t *wchs) {
@@ -52,9 +48,8 @@ public:
   static Base64Array Base64Decode(const char *chs) {
     return Base64Decode(chs, StringTools::strlen(chs));
   }
-
 };
 
-}
+}  // namespace ofw
 
 #endif

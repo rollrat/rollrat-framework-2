@@ -16,13 +16,11 @@
 #include <memory.h>
 #include <string>
 
-namespace ofw
-{
+namespace ofw {
 
 template <typename type>
-class PolynomialNode
-{
-public:
+class PolynomialNode {
+ public:
   typedef PolynomialNode<type> this_type;
 
   this_type *next;
@@ -33,29 +31,26 @@ public:
 };
 
 template <typename type>
-class Polynomial
-{
+class Polynomial {
   typedef Polynomial<type> this_type;
   typedef PolynomialNode<type> node_type;
   typedef typename type number_type;
 
-  const number_type zero = static_cast<number_type> (0);
-  const number_type  one = static_cast<number_type> (1);
+  const number_type zero = static_cast<number_type>(0);
+  const number_type one = static_cast<number_type>(1);
 
   node_type *start;
   node_type *end;
 
-public:
+ public:
   Polynomial() { init(); }
-  Polynomial(const this_type& clone) : Polynomial() { this->clone(clone); }
+  Polynomial(const this_type &clone) : Polynomial() { this->clone(clone); }
   ~Polynomial() { destroy(); }
 
-  void set(number_type coeff, number_type degree)
-  {
+  void set(number_type coeff, number_type degree) {
     node_type *iter = start;
 
-    if (iter->next != end)
-      iter = iter->next;
+    if (iter->next != end) iter = iter->next;
 
     while (iter->next != end) {
       if (iter->degree < degree) {
@@ -74,17 +69,23 @@ public:
     push(iter, coeff, degree);
   }
 
-  this_type& operator+=(const this_type& poly)
-  { return plus_minus(poly, true); }
-  this_type operator+(const this_type& poly) const
-  { this_type tmp = *this; return tmp += poly; }
+  this_type &operator+=(const this_type &poly) {
+    return plus_minus(poly, true);
+  }
+  this_type operator+(const this_type &poly) const {
+    this_type tmp = *this;
+    return tmp += poly;
+  }
 
-  this_type& operator-=(const this_type& poly)
-  { return plus_minus(poly, false); } 
-  this_type operator-(const this_type& poly) const
-  { this_type tmp = *this; return tmp -= poly; }
+  this_type &operator-=(const this_type &poly) {
+    return plus_minus(poly, false);
+  }
+  this_type operator-(const this_type &poly) const {
+    this_type tmp = *this;
+    return tmp -= poly;
+  }
 
-  this_type& operator*=(const this_type& poly) {
+  this_type &operator*=(const this_type &poly) {
     this_type p;
     node_type *iter = poly.start->next;
 
@@ -102,10 +103,12 @@ public:
     *this = p;
     return *this;
   }
-  this_type operator*(const this_type& poly) const
-  { this_type tmp = *this; return tmp *= poly; }
+  this_type operator*(const this_type &poly) const {
+    this_type tmp = *this;
+    return tmp *= poly;
+  }
 
-  this_type& operator*=(const number_type num) {
+  this_type &operator*=(const number_type num) {
     if (num == zero) {
       to_zero();
     } else {
@@ -117,10 +120,12 @@ public:
     }
     return *this;
   }
-  this_type operator*(const number_type num) const
-  { this_type tmp = *this; return tmp *= num; }
+  this_type operator*(const number_type num) const {
+    this_type tmp = *this;
+    return tmp *= num;
+  }
 
-  this_type& operator/=(const number_type num) {
+  this_type &operator/=(const number_type num) {
     node_type *iter = start->next;
     while (iter != end) {
       iter->coeff /= num;
@@ -128,19 +133,23 @@ public:
     }
     return *this;
   }
-  this_type operator/(const number_type num) const
-  { this_type tmp = *this; return tmp /= num; } 
-  this_type& operator/=(const this_type& poly)
-  { return div_rest(poly, true); } 
-  this_type operator/(const this_type& poly) const
-  { this_type tmp = *this; return tmp /= poly; }
+  this_type operator/(const number_type num) const {
+    this_type tmp = *this;
+    return tmp /= num;
+  }
+  this_type &operator/=(const this_type &poly) { return div_rest(poly, true); }
+  this_type operator/(const this_type &poly) const {
+    this_type tmp = *this;
+    return tmp /= poly;
+  }
 
-  this_type& operator%=(const this_type& poly)
-  { return div_rest(poly, false); }
-  this_type operator%(const this_type& poly) const
-  { this_type tmp = *this; return tmp %= poly; }
+  this_type &operator%=(const this_type &poly) { return div_rest(poly, false); }
+  this_type operator%(const this_type &poly) const {
+    this_type tmp = *this;
+    return tmp %= poly;
+  }
 
-  this_type& derivative() {
+  this_type &derivative() {
     node_type *iter = start->next;
     while (iter != end) {
       if (iter->degree != zero) {
@@ -162,32 +171,29 @@ public:
     while (iter != end) {
       if (iter->coeff != one) {
         build.append(std::to_string(iter->coeff));
-        if (iter->degree != zero)
-          build.append("*x");
+        if (iter->degree != zero) build.append("*x");
       } else {
-        if (iter->degree != zero)
-          build.append("x");
+        if (iter->degree != zero) build.append("x");
       }
       if (iter->degree != zero && iter->degree != one) {
         build.append("^");
         build.append(std::to_string(iter->degree));
       }
-      if (iter->next != end && iter->next->coeff > zero)
-        build.append("+");
+      if (iter->next != end && iter->next->coeff > zero) build.append("+");
       iter = iter->next;
     }
 
     return build;
   }
 
-  this_type& operator=(const this_type& poly) {
+  this_type &operator=(const this_type &poly) {
     to_zero();
     clone(poly);
     return *this;
   }
 
-  template < typename _Func >
-  number_type evaluate(number_type num, _Func& func) const {
+  template <typename _Func>
+  number_type evaluate(number_type num, _Func &func) const {
     node_type *iter = start->next;
     number_type ret = zero;
 
@@ -199,9 +205,8 @@ public:
     return ret;
   }
 
-private:
-
-  this_type & plus_minus(const this_type& poly, bool pm) {
+ private:
+  this_type &plus_minus(const this_type &poly, bool pm) {
     node_type *iter1 = start->next;
     node_type *iter2 = poly.start->next;
 
@@ -248,7 +253,7 @@ private:
     return *this;
   }
 
-  this_type& div_rest(const this_type& poly, bool dr) {
+  this_type &div_rest(const this_type &poly, bool dr) {
     node_type *iter = start->next;
     node_type *siter = poly.start->next;
 
@@ -307,7 +312,7 @@ private:
     }
   }
 
-  node_type* get_node() {
+  node_type *get_node() {
     node_type *node = new node_type;
     node->next = nullptr;
     node->prev = nullptr;
@@ -347,12 +352,11 @@ private:
     end->next = end;
   }
 
-  void clone(const this_type& clone) {
+  void clone(const this_type &clone) {
     node_type *iter1 = start;
     node_type *iter2 = clone.start->next;
 
-    while (iter2 != clone.end)
-    {
+    while (iter2 != clone.end) {
       push(iter1, iter2->coeff, iter2->degree);
       iter1 = iter1->next;
       iter2 = iter2->next;
@@ -370,9 +374,8 @@ private:
 
     delete start;
   }
-
 };
 
-}
+}  // namespace ofw
 
 #endif

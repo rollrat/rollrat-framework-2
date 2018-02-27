@@ -16,13 +16,13 @@
 #include <stdint.h>
 
 // Get a pointer type can be sure.
-#if defined(__x86_64__) || defined(__ia64__) || defined(_M_AMD64) \
-  || defined(_M_IA64) || defined(_WIN64) || defined(__alpha__) \
-  || defined(__s390__)
+#if defined(__x86_64__) || defined(__ia64__) || defined(_M_AMD64) || \
+    defined(_M_IA64) || defined(_WIN64) || defined(__alpha__) ||     \
+    defined(__s390__)
 #define _X64_MODE
-typedef uint64_t	ptr_type;
+typedef uint64_t ptr_type;
 #else
-typedef uint32_t	ptr_type;
+typedef uint32_t ptr_type;
 #endif
 
 #ifdef _MSC_VER
@@ -40,6 +40,5 @@ typedef uint32_t	ptr_type;
 #elif __linux__
 #define _OS_LINUX
 #endif
-
 
 #endif

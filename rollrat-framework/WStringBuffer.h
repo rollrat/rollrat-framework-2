@@ -17,36 +17,36 @@
 
 #include "WString.h"
 
-namespace ofw 
-{
+namespace ofw {
 
-class WStringBuffer
-{
+class WStringBuffer {
   wchar_t *ptr;
   size_t length;
   size_t capacity;
 
-public:
+ public:
   WStringBuffer();
   WStringBuffer(size_t capacity);
   ~WStringBuffer();
 
-  void Append(const WString& refer);
+  void Append(const WString &refer);
   void Append(const wchar_t *wstr);
   void Append(wchar_t ch);
-  
-  template<typename wt_over>
-  void Append(wt_over over) { Append(WString(over)); }
+
+  template <typename wt_over>
+  void Append(wt_over over) {
+    Append(WString(over));
+  }
 
   size_t Length() const { return length; }
   WString ToString();
   void EnsureMore(size_t size);
 
-private:
+ private:
   void Append(const wchar_t *wstr, size_t len);
   void Ensure(size_t size);
   void EnsureCopy(size_t size);
 };
 
-}
+}  // namespace ofw
 #endif

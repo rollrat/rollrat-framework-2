@@ -13,26 +13,21 @@
 #ifndef _HASH_9bf1541fdf7efd41b7b39543fd870ac4_
 #define _HASH_9bf1541fdf7efd41b7b39543fd870ac4_
 
+#include "Crypto/Sha256.h"
 #include "WString.h"
 #include "WStringBuffer.h"
-#include "Crypto/Sha256.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class Sha256
-{
-public:
-
-  static uint8_t *FromArray(uint8_t *hash, size_t size)
-  {
+class Sha256 {
+ public:
+  static uint8_t *FromArray(uint8_t *hash, size_t size) {
     uint8_t *arr = new uint8_t[32];
     SHA256(hash, size, arr);
     return arr;
   }
 
-  static WString FromString(const WString& wstr)
-  {
+  static WString FromString(const WString &wstr) {
     const char *hexmap = "0123456789abcdef";
     uint8_t *hash = FromArray((uint8_t *)wstr.Reference(), wstr.Length() * 2);
     WStringBuffer buffer(64);
@@ -43,8 +38,7 @@ public:
     return buffer.ToString();
   }
 
-  static WString FromString(const char *str, size_t length)
-  {
+  static WString FromString(const char *str, size_t length) {
     const char *hexmap = "0123456789abcdef";
     uint8_t *hash = FromArray((uint8_t *)str, length);
     WStringBuffer buffer(64);
@@ -55,13 +49,11 @@ public:
     return buffer.ToString();
   }
 
-  static WString FromString(const char *str)
-  {
+  static WString FromString(const char *str) {
     return FromString(str, StringTools::strlen(str));
   }
-
 };
 
-}
+}  // namespace ofw
 
 #endif

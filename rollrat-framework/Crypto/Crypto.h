@@ -15,17 +15,15 @@
 
 #include "Crypto/Hash.h"
 
-namespace ofw
-{
+namespace ofw {
 
-class HashCrypto
-{
-public:
+class HashCrypto {
+ public:
   using CryptoArray = ReadOnlyArray<uint8_t>;
 
   static void Run(const CryptoArray& plain, CryptoArray& key);
 };
 
-}
+}  // namespace ofw
 
 #endif
