@@ -55,24 +55,24 @@ BigBase::this_type& BigBase::operator<<=(uint32_t len) {
 
   if (shift > 0) {
     if (modur == 0 || modul == 0) {
-      for (int i = length - 1; i >= shift; i--) {
+      for (uint32_t i = length - 1; i >= shift; i--) {
         blocks[i] = blocks[i - shift];
       }
-      for (int i = 0; i < shift; i++) {
+      for (uint32_t i = 0; i < shift; i++) {
         blocks[i] = 0;
       }
     } else {
-      for (int i = length - 1; i > shift; i--) {
+      for (uint32_t i = length - 1; i > shift; i--) {
         blocks[i] =
             (blocks[i - shift] << modul) | (blocks[i - shift - 1] >> modur);
       }
       blocks[shift] = blocks[0] << modul;
-      for (int i = 0; i < shift; i++) {
+      for (uint32_t i = 0; i < shift; i++) {
         blocks[i] = 0;
       }
     }
   } else {
-    for (int i = length - 1; i > 0; i--) {
+    for (uint32_t i = length - 1; i > 0; i--) {
       blocks[i] = (blocks[i] << modul) | (blocks[i - 1] >> modur);
     }
     blocks[0] <<= modul;
@@ -97,25 +97,25 @@ BigBase::this_type& BigBase::operator>>=(uint32_t len) {
 
   if (shift > 0 && shift <= length) {
     if (modur == 0 || modul == 0) {
-      for (int i = 0; i < length - shift; i++) {
+      for (uint32_t i = 0; i < length - shift; i++) {
         blocks[i] = blocks[i + shift];
       }
-      for (int i = length - 1, j = 0; j < shift; i--, j++) {
+      for (uint32_t i = length - 1, j = 0; j < shift; i--, j++) {
         blocks[i] = 0;
       }
     } else {
-      for (int i = 0; i < length - shift - 1; i++) {
+      for (uint32_t i = 0; i < length - shift - 1; i++) {
         blocks[i] =
             (blocks[i + shift] >> modur) | (blocks[i + shift + 1] << modul);
       }
       blocks[length - shift - 1] = blocks[length - 1] >> modur;
-      for (int i = length - 1, j = 0; j < shift; i--, j++) {
+      for (uint32_t i = length - 1, j = 0; j < shift; i--, j++) {
         blocks[i] = 0;
       }
       blocks[shift] >>= modur;
     }
   } else {
-    for (int i = 0; i < length - 1; i++) {
+    for (uint32_t i = 0; i < length - 1; i++) {
       blocks[i] = (blocks[i] >> modur) | (blocks[i + 1] << modul);
     }
     blocks[length - 1] >>= modur;
@@ -144,7 +144,7 @@ BigBase::this_type& BigBase::operator++() {
   blocks[0] = (uint32_t)(tmp);
   carry = tmp >> 32;
 
-  for (int i = 1; carry && i < length; i++) {
+  for (uint32_t i = 1; carry && i < length; i++) {
     uint64_t tmp = (uint64_t)blocks[i] + carry;
     blocks[i] = (uint32_t)(tmp);
     carry = tmp >> 32;
@@ -172,7 +172,7 @@ BigBase::this_type& BigBase::operator--() {
   blocks[0] = (uint32_t)(tmp);
   borrow = (uint32_t)(tmp >> 32) & 1;
 
-  for (int i = 0; i < length && borrow; i++) {
+  for (uint32_t i = 0; i < length && borrow; i++) {
     uint64_t tmp = (uint64_t)blocks[i] - borrow;
     blocks[i] = (uint32_t)(tmp);
     borrow = (uint32_t)(tmp >> 32) & 1;
@@ -202,7 +202,7 @@ BigBase::this_type BigBase::operator--(int) {
 BigBase::this_type& BigBase::operator+=(const this_type& integer) {
   if (length >= integer.length && length > 0) {
     uint32_t carry = 0;
-    int i = 0;
+    uint32_t i = 0;
 
     for (; i < integer.length; i++) {
       uint64_t tmp =
@@ -236,7 +236,7 @@ BigBase::this_type& BigBase::operator+=(const this_type& integer) {
 BigBase::this_type& BigBase::operator-=(const this_type& integer) {
   if (length >= integer.length && length > 0) {
     uint32_t borrow = 0;
-    int i = 0;
+    uint32_t i = 0;
 
     for (; i < integer.length; i++) {
       uint64_t tmp =
@@ -281,9 +281,9 @@ BigBase::this_type& BigBase::operator*=(const this_type& integer) {
 
   memset(u, 0, sizeof(uint32_t) * len);
 
-  for (int i = 0; i < length; i++) {
+  for (uint32_t i = 0; i < length; i++) {
     int k = i;
-    for (int j = 0; j < integer.length; j++, k++) {
+    for (uint32_t j = 0; j < integer.length; j++, k++) {
       uint64_t l =
           (uint64_t)(blocks[i]) * (uint64_t)(integer.blocks[j]) + carry + u[k];
       u[k] = (uint32_t)l;
@@ -464,7 +464,7 @@ std::string BigBase::to_hex() const {
   char* tmp = new char[decmax];
   char* pp = tmp;
 
-  for (int i = 0; i < length; i++) {
+  for (uint32_t i = 0; i < length; i++) {
     for (int j = 0; j < 8; j++) {
       int bc = (this->blocks[i] >> (j * 4)) & 0xf;
       if (bc < 10)
@@ -489,7 +489,7 @@ std::string BigBase::to_binary() const {
   char* tmp = new char[length * 32 + 1];
   char* pp = tmp;
 
-  for (int i = 0; i < length; i++) {
+  for (uint32_t i = 0; i < length; i++) {
     for (int j = 0; j < 32; j++) {
       *pp++ = ((this->blocks[i] >> j) & 1) + '0';
     }
@@ -681,7 +681,7 @@ void BigBase::init_decimal(std::string dec) {
 
   if (len / 9) {
     len -= count;
-    for (int i = 0; i < len; i += 9) {
+    for (uint32_t i = 0; i < len; i += 9) {
       uint32_t carry = to_int9(dec, count + i, 9);
       for (int j = 0; carry; j++) {
         carry += (uint64_t)(blocks[j]) * 1000000000;

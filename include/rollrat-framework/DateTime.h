@@ -57,7 +57,7 @@ class DateTime {
       : m_seconds(GetSecondsFromDate(year, month, day) +
                   GetSecondsFromTime(hour, minute, second)) {}
 
-  int Days() { return m_seconds / __timeDay; }
+  int Days() { return (int)(m_seconds / __timeDay); }
   int Hours() { return (uint64_t(m_seconds / __timeHour)) % 24; }
   int Minutes() { return (uint64_t(m_seconds / __timeMinute)) % 60; }
   int Seconds() { return (uint64_t(m_seconds / __timeSecond)) % 60; }

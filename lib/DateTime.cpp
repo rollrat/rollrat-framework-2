@@ -224,7 +224,7 @@ uint64_t DateTime::GetDayFromYear(int year) {
 // 2: month
 // 3: day
 int DateTime::GetDatePart(int wh) {
-  int n = m_seconds / __timeDay;
+  int n = (int)(m_seconds / __timeDay);
   int y400 = n / __Days400Years;
   n -= y400 * __Days400Years;
   int y100 = n / __Days100Years;

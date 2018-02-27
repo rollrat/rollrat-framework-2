@@ -101,7 +101,6 @@ bool ofw::File::Exist(const WString& path) {
 }
 
 bool ofw::File::Rename(const WString& oldname, const WString& newname) {
-  int err;
   if (!_wrename(oldname.Reference(), newname.Reference())) return true;
   if (!MoveFileW(oldname.Reference(), newname.Reference())) return true;
   return false;

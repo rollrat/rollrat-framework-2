@@ -64,7 +64,7 @@ typedef struct _sha256_context {
 	SHA_ULONG residue, inces;
 } SHA256_CONTEXT, *PSHA256_CONTEXT;
 
-void SHA256_Mixing(SHA_PULONG indexs, SHA_PULONG outdexs)
+void SHA256_Mixing(const SHA_PULONG indexs, SHA_PULONG outdexs)
 {
 	SHA_ULONG w[64];
 	SHA_ULONG i, a, b, c, d, e, f, g, h, t1, t2;
@@ -232,8 +232,6 @@ void SHA256_Mixing(SHA_PULONG indexs, SHA_PULONG outdexs)
 
 void SHA256_Init(PSHA256_CONTEXT init_tgt)
 {
-	SHA_ULONG i;
-
 	init_tgt->residue = 0;
 	init_tgt->inces = 0;
 
@@ -250,8 +248,6 @@ void SHA256_Init(PSHA256_CONTEXT init_tgt)
 
 void SHA256_Update(PSHA256_CONTEXT cnxt, const SHA_BYTE *target, SHA_ULONG size)
 {
-	SHA_ULONG i;
-
 	cnxt->inces += size << 3;
 
 	if (cnxt->inces < 0)
@@ -261,7 +257,7 @@ void SHA256_Update(PSHA256_CONTEXT cnxt, const SHA_BYTE *target, SHA_ULONG size)
 
 	while (size >= 64) {
 		memcpy((SHA_PULONG)cnxt->buffer, target, (size_t)size);
-		SHA256_Mixing(target, cnxt->outdexs);
+		SHA256_Mixing((const SHA_PULONG)target, cnxt->outdexs);
 		target += 64;
 		size -= 64;
 	}
@@ -271,21 +267,21 @@ void SHA256_Update(PSHA256_CONTEXT cnxt, const SHA_BYTE *target, SHA_ULONG size)
 
 void SHA256_Final(PSHA256_CONTEXT cnxt, SHA_BYTE *bytes)
 {
-	SHA_ULONG i, j, index, len;
+	SHA_ULONG i, index;
 
 	index = (cnxt->inces >> 3) % 64;
 	cnxt->buffer[index++] = 0x80;
 
 	if (index > 56) {
-		memset((SHA_ULONG)cnxt->buffer + index, 0, 64 - index);
+		memset((void *)((SHA_ULONG)cnxt->buffer + index), 0, 64 - index);
 		SHA256_Mixing((SHA_PULONG)cnxt->buffer, cnxt->outdexs);
-		memset((SHA_ULONG)cnxt->buffer, 0, 56);
+		memset((void *)((SHA_ULONG)cnxt->buffer), 0, 56);
 	}
 	else
-		memset((SHA_ULONG)cnxt->buffer + index, 0, 56 - index);
+		memset((void *)((SHA_ULONG)cnxt->buffer + index), 0, 56 - index);
 
-	cnxt->buffer[14] = CONVERT_TO_LITTLE_ENDIAN(cnxt->residue);
-	cnxt->buffer[15] = CONVERT_TO_LITTLE_ENDIAN(cnxt->inces);
+	cnxt->buffer[14] = (SHA_BYTE)CONVERT_TO_LITTLE_ENDIAN(cnxt->residue);
+	cnxt->buffer[15] = (SHA_BYTE)CONVERT_TO_LITTLE_ENDIAN(cnxt->inces);
 
 	SHA256_Mixing((SHA_PULONG)cnxt->buffer, cnxt->outdexs);
 

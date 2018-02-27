@@ -52,13 +52,13 @@ static wchar_t getWChar(unsigned long long low, unsigned long mask) {
     // 5bytes not exist
     // in wchar_t
   } else if ((mask & 0xf0) == 0xf0) {
-    wt = ((mask & 0xf) << 18) | (low & 0x3f) | ((low & 0x3f00) >> 2) |
-         ((low & 0x3f0000) >> 10);
+    wt = (wchar_t)(((mask & 0xf) << 18) | (low & 0x3f) | ((low & 0x3f00) >> 2) |
+         ((low & 0x3f0000) >> 10));
   } else if ((mask & 0xe0) == 0xe0) {
-    wt = ((mask & 0x1f) << 12) | (low & 0x3f) |
-         ((low & 0x3f00) >> 2);  // >> 8 + << 6 = >> 2
+    wt = (wchar_t)(((mask & 0x1f) << 12) | (low & 0x3f) |
+         ((low & 0x3f00) >> 2));  // >> 8 + << 6 = >> 2
   } else if ((mask & 0xc0) == 0xc0) {
-    wt = (mask & 0x3f >> 6) | (low & 0x3f);
+    wt = (wchar_t)((mask & 0x3f >> 6) | (low & 0x3f));
   } else {
     wt = (wchar_t)low;
   }
@@ -86,9 +86,9 @@ WString ofw::UrlEncoding::UrlEncode(const wchar_t* wchs, size_t length) {
       wb.Append(L"+");
     } else {
       unsigned long ul = ToUtf8Ch(wchs[i]);
-      if (ul >= 0x1000000) AppendHex((ul & 0xff000000) >> 24, wb);
-      if (ul >= 0x10000) AppendHex((ul & 0xff0000) >> 16, wb);
-      if (ul >= 0x100) AppendHex((ul & 0xff00) >> 8, wb);
+      if (ul >= 0x1000000) AppendHex((uint8_t)((ul & 0xff000000) >> 24), wb);
+      if (ul >= 0x10000) AppendHex((uint8_t)((ul & 0xff0000) >> 16), wb);
+      if (ul >= 0x100) AppendHex((uint8_t)((ul & 0xff00) >> 8), wb);
       AppendHex(ul & 0xff, wb);
     }
   }
@@ -99,37 +99,37 @@ WString ofw::UrlEncoding::UrlDecode(const wchar_t* wchs, size_t length) {
   WStringBuilder wb;
   for (size_t i = 0; i < length;) {
     if (wchs[i] == L'%') {
-      unsigned long long buf;
-      unsigned long mask = (getInt(wchs[i + 1]) << 4) | (getInt(wchs[i + 2]));
+      uint64_t buf;
+      uint32_t mask = (getInt(wchs[i + 1]) << 4) | (getInt(wchs[i + 2]));
 
       i += 3;
 
       if ((mask & 0xfc) == 0xfc) {
-        buf = (getInt(wchs[i + 1])) << 36;
-        buf |= (getInt(wchs[i + 2])) << 32;
-        buf |= (getInt(wchs[i + 4])) << 28;
-        buf |= (getInt(wchs[i + 5])) << 24;
-        buf |= (getInt(wchs[i + 7])) << 20;
-        buf |= (getInt(wchs[i + 8])) << 16;
-        buf |= (getInt(wchs[i + 10])) << 12;
-        buf |= (getInt(wchs[i + 11])) << 8;
-        buf |= (getInt(wchs[i + 13])) << 4;
-        buf |= (getInt(wchs[i + 14]));
+        buf =  uint64_t(getInt(wchs[i + 1])) << 36;
+        buf |= uint64_t(getInt(wchs[i + 2])) << 32;
+        buf |= uint64_t(getInt(wchs[i + 4])) << 28;
+        buf |= uint64_t(getInt(wchs[i + 5])) << 24;
+        buf |= uint64_t(getInt(wchs[i + 7])) << 20;
+        buf |= uint64_t(getInt(wchs[i + 8])) << 16;
+        buf |= uint64_t(getInt(wchs[i + 10])) << 12;
+        buf |= uint64_t(getInt(wchs[i + 11])) << 8;
+        buf |= uint64_t(getInt(wchs[i + 13])) << 4;
+        buf |= uint64_t(getInt(wchs[i + 14]));
 
         i += 15;
       } else if ((mask & 0xf8) == 0xf8) {
-        buf = (getInt(wchs[i + 1])) << 28;
-        buf |= (getInt(wchs[i + 2])) << 24;
-        buf |= (getInt(wchs[i + 4])) << 20;
-        buf |= (getInt(wchs[i + 5])) << 16;
-        buf |= (getInt(wchs[i + 7])) << 12;
-        buf |= (getInt(wchs[i + 8])) << 8;
-        buf |= (getInt(wchs[i + 10])) << 4;
-        buf |= (getInt(wchs[i + 11]));
+        buf =  uint64_t(getInt(wchs[i + 1])) << 28;
+        buf |= uint64_t(getInt(wchs[i + 2])) << 24;
+        buf |= uint64_t(getInt(wchs[i + 4])) << 20;
+        buf |= uint64_t(getInt(wchs[i + 5])) << 16;
+        buf |= uint64_t(getInt(wchs[i + 7])) << 12;
+        buf |= uint64_t(getInt(wchs[i + 8])) << 8;
+        buf |= uint64_t(getInt(wchs[i + 10])) << 4;
+        buf |= uint64_t(getInt(wchs[i + 11]));
 
         i += 12;
       } else if ((mask & 0xf0) == 0xf0) {
-        buf = (getInt(wchs[i + 1])) << 20;
+        buf =  (getInt(wchs[i + 1])) << 20;
         buf |= (getInt(wchs[i + 2])) << 16;
         buf |= (getInt(wchs[i + 4])) << 12;
         buf |= (getInt(wchs[i + 5])) << 8;

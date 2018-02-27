@@ -183,7 +183,7 @@ std::string BigFraction::fraction_point(size_t valid_point) const {
 
   hit -= div * lot;  // high % low
 
-  for (int i = 0; i < valid_point && hit != 0; i++) {
+  for (uint32_t i = 0; i < valid_point && hit != 0; i++) {
     hit *= 10;
     div = hit / lot;
     builder.append(div.to_string());
