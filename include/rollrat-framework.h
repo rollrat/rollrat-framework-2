@@ -30,5 +30,4 @@
 #include "rollrat-framework/Encoding/UrlEncoding.h"
 #include "rollrat-framework/Math/Polynomial.h"
 
-
 #endif
