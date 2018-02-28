@@ -1,6 +1,11 @@
 {
     "files.associations": {
+        "*.cpp": "cpp",
         "sha256.h": "c",
-        "vector": "cpp"
+        "vector": "cpp",
+        "algorithm": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "xstring": "cpp"
     }
 }
