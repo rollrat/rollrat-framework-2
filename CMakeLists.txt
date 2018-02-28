@@ -18,7 +18,16 @@ set (ROLLRAT_LIBRARY librollrat)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
-    
-add_subdirectory (test)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_subdirectory (test)
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
+
 add_subdirectory (lib)
-add_subdirectory (util) 
+add_subdirectory (util)
+
+install(
+    DIRECTORY lib/ 
+    DESTINATION include/ 
+    FILES_MATCHING PATTERN "*.h"
+    )
