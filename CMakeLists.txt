@@ -5,6 +5,10 @@ set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
 
+if (MSVC)
+    add_definitions( "/wd4244 /wd4715 /wd4474 /wd4293" )
+endif(MSVC)
+
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
     ${CMAKE_SOURCE_DIR}/cmake
