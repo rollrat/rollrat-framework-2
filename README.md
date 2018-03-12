@@ -49,7 +49,7 @@ void test_BigXXX()
 }
 ```
 
-### Test
+#### Test
 
 ``` c++
 long divide = 2000;
@@ -110,3 +110,78 @@ Result
 
  ...
 ```
+
+---
+
+### Url Encoding
+
+``` c++
+void test_UrlEncoding() {
+  wcout << UrlEncoding::UrlEncode("rollrat") << endl;
+  wcout << UrlEncoding::UrlDecode(L"%72%6F%6C%6C%72%61%74") << endl;
+}
+```
+
+### Sha256
+
+``` c++
+void test_Hash() {
+  // e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  wcout << Sha256::FromString(L"") << endl;
+  wcout << Sha256::FromString(L"rollrat") << endl;
+}
+```
+
+### Base64
+
+``` c++
+void test_Base64() {
+  wcout << Base64Encoding::Base64Encode("rollrat") << endl;
+  wcout << WString((const char *)Base64Encoding::Base64Decode(
+                       Base64Encoding::Base64Encode("rollrat"))
+                       .Array(),
+                   7);
+}
+```
+
+### Folder Enumerator
+
+``` c++
+void test_Enumerator() {
+  // enumerate specific folder
+  FolderEnumerator fe("C:\\");
+  do
+    wcout << fe.GetFullName() << endl;
+  while (fe.NextFolder());
+
+  // enumerate all sub-folder
+  stack<FolderEnumerator *> stc;
+  stc.push(nullptr);
+  FolderEnumerator *ptr = new FolderEnumerator("C:\\");
+  while (ptr) {
+    if (ptr->IsValid() && ptr->NextFolder()) {
+      wcout << ptr->GetFullName() << endl;
+      stc.push(ptr);
+      ptr = new FolderEnumerator(ptr->GetFullName());
+
+    } else {
+      ptr = stc.top();
+      stc.pop();
+    }
+  }
+}
+```
+
+### WString
+
+``` c++
+void test_WString() {
+  // test split and replace
+  WString ws(L"<B>rollrat<B> <B>software<B>");
+  WString::ArrayType ar = ws.Split(L"<B>");
+  ar.Each([](WString *ws) { wcout << *ws << endl; });
+  wcout << ws.Replace(L"<B>", L"->C<-");
+}
+```
+
+If you want more information about wstring then go to https://github.com/rollrat/wstring-master.
