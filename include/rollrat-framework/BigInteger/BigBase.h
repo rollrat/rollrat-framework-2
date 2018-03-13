@@ -30,6 +30,7 @@ class BigBase {
  public:
   BigBase();
   BigBase(uint32_t uiptr);
+  BigBase(this_type&& refer);
   BigBase(const this_type& refer);
   BigBase(const char* str);
   BigBase(const std::string str);
@@ -39,6 +40,7 @@ class BigBase {
   void aly_hex(const std::string str);
   void aly_dec(const std::string str);
 
+  this_type& operator=(this_type&& refer);
   this_type& operator=(const this_type& integer);
 
   this_type& operator<<=(uint32_t len);

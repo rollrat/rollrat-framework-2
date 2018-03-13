@@ -29,11 +29,13 @@ class BigInteger {
   BigInteger();
   BigInteger(uint32_t uiptr);
   BigInteger(int32_t iptr);
+  BigInteger(this_type&& refer);
   BigInteger(const this_type& refer);
   BigInteger(const char* str);
   BigInteger(const std::string str);
   ~BigInteger();
 
+  this_type& operator=(this_type&& integer);
   this_type& operator=(const this_type& integer);
 
   this_type& operator<<=(uint32_t len);

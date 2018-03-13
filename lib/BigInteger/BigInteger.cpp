@@ -29,6 +29,10 @@ BigInteger::BigInteger(int32_t iptr) {
     _sign = -1;
   }
 }
+BigInteger::BigInteger(this_type&& refer) {
+  std::swap(base, refer.base);
+  std::swap(_sign, refer._sign);
+}
 
 BigInteger::BigInteger(const this_type& refer)
     : base(refer.base), _sign(refer._sign) {}
@@ -54,6 +58,12 @@ BigInteger::BigInteger(const std::string str) {
 }
 
 BigInteger::~BigInteger() {}
+
+BigInteger::this_type& BigInteger::operator=(this_type&& integer) {
+  std::swap(base, integer.base);
+  std::swap(_sign, integer._sign);
+  return *this;
+}
 
 BigInteger::this_type& BigInteger::operator=(const this_type& integer) {
   base = integer.base;

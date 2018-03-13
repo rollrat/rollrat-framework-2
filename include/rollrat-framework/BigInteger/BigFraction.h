@@ -27,11 +27,14 @@ class BigFraction {
  public:
   BigFraction();
   BigFraction(std::string wstr);
+  BigFraction(this_type&& refer);
+  BigFraction(const this_type& refer);
   explicit BigFraction(integer_operation io);
   BigFraction(std::string wstr1, std::string wstr2);
   BigFraction(uint32_t uip1, uint32_t uip2 = 1);
 
   this_type& operator=(std::string wstr);
+  this_type& operator=(this_type&& refer);
   this_type& operator=(const this_type& refer);
   this_type& operator*=(const this_type& refer);
   this_type operator*(const this_type& refer) const;

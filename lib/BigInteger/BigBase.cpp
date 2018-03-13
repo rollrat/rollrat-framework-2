@@ -39,6 +39,12 @@ void BigBase::aly_hex(const std::string str) { init_hex(str); }
 
 void BigBase::aly_dec(const std::string str) { init_decimal(str); }
 
+BigBase::this_type& BigBase::operator=(this_type&& refer) {
+  std::swap(blocks, refer.blocks);
+  std::swap(length, refer.length);
+  return *this;
+}
+
 BigBase::this_type& BigBase::operator=(const this_type& integer) {
   copy(integer);
   return *this;

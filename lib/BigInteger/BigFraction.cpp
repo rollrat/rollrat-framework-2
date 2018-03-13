@@ -16,6 +16,14 @@ using namespace ofw;
 
 BigFraction::BigFraction() : high(uint32_t(0)), low(1) {}
 
+BigFraction::BigFraction(this_type&& refer) {
+  std::swap(high, refer.high);
+  std::swap(low, refer.low);
+}
+
+BigFraction::BigFraction(const this_type& refer)
+  : high(refer.high), low(refer.low) {}
+
 BigFraction::BigFraction(std::string wstr) : high(wstr), low(1) {}
 
 BigFraction::BigFraction(integer_operation io) : high(io), low(1) {}
@@ -27,6 +35,12 @@ BigFraction::BigFraction(std::string wstr1, std::string wstr2)
 
 BigFraction::BigFraction(uint32_t uip1, uint32_t uip2)
     : high(uip1), low(uip2) {}
+
+BigFraction::this_type& BigFraction::operator=(this_type && refer) {
+  std::swap(high, refer.high);
+  std::swap(low, refer.low);
+  return *this;
+}
 
 BigFraction::this_type& BigFraction::operator=(std::string wstr) {
   high = wstr;
